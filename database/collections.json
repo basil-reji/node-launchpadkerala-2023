@@ -2,5 +2,6 @@
     "USER": "users",
     "MESSAGE": "messages",
     "CANDIDATES": "candidates",
-    "RECRUITERS": "recruiters"
+    "RECRUITERS": "recruiters",
+    "INTERVIEWS": "interviews"
 }

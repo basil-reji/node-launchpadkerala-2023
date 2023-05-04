@@ -96,11 +96,11 @@ const allotment = {
             let preference = [];
             let options = ['A', 'B', 'C', 'D'];
             for (i = 0; i < 4; i++) {
-                let option = data[`preference_${i+1}`];
-                if (options.indexOf(option) != -1 && preference.indexOf(option) == -1) {
+                let option = data[`preference_${i + 1}`];
+                if (options.indexOf(option) != -1 && preference.indexOf(option) == -1 && option != undefined && option != null && option != "") {
                     preference.push(option);
                 } else {
-                    reject("Please select unique preferences.")
+                    reject("Please select preferences correctly.")
                 }
             }
             let allotment = {
@@ -110,7 +110,7 @@ const allotment = {
             db.get()
                 .collection(collections.CANDIDATES)
                 .update(
-                    { id: id},
+                    { id: id },
                     {
                         $set:
                         {
@@ -132,7 +132,7 @@ const allotment = {
     }
 }
 
-const recruiter ={
+const recruiter = {
     view: (id) => {
         return new Promise(async (resolve, reject) => {
 
@@ -150,19 +150,19 @@ const recruiter ={
     },
     getPool: (pool) => {
         return new Promise(async (resolve, reject) => {
-                
-                db.get()
-                    .collection(collections.RECRUITERS)
-                    .find({
-                        "pool": pool.toUpperCase()
-                    })
-                    .toArray()
-                    .then((response) => {
-                        console.log(response)
-                        resolve(response)
-                    }).catch((error) => {
-                        reject("Something Went wrong please try again later.")
-                    })
+
+            db.get()
+                .collection(collections.RECRUITERS)
+                .find({
+                    "pool": pool.toUpperCase()
+                })
+                .toArray()
+                .then((response) => {
+                    console.log(response)
+                    resolve(response)
+                }).catch((error) => {
+                    reject("Something Went wrong please try again later.")
+                })
         })
     }
 }

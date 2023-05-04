@@ -1,0 +1,34 @@
+<section id="inner_page_section" class="inner_page_section">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-8 col-md-6">
+                <div class="forms box-shadow">
+                    <div class="head">
+                        <h3>Results <span>Recruiter Allotment</span></h3>
+                    </div>
+                    {{#if message}}<p class="error">{{message}}</p>{{/if}}
+                    <form action="/allotment/view" method="post" role="form" class="form">
+                        <div class="form-group">
+                            <label for="lpk_id">Launchpad Kerala ID:</label>
+                            <input type="lpk_id" class="form-control" name="lpk_id" id="lpk_id" placeholder="LPK00000"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Registered Email:</label>
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email"
+                                required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit">View Allotment</button>
+                        </div>
+                    </form>
+                    <div class="footer">
+                        Having trouble? contact <strong>info@launchpadkerala.org</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

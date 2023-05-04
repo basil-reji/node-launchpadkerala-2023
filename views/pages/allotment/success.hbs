@@ -8,48 +8,100 @@
                     <div class="card-body">
                         <h5 class="text-center mb-3" style="color: #21BF73;">
                             <strong>
+                                {{#if candidate.allotment.allotted}}
                                 Congratulations!<br>
                                 {{success_message}}
+                                {{else}}
+                                <span style="color:rgb(252, 43, 85)">{{failure_message}}</span>
+                                {{/if}}
                             </strong>
                         </h5>
-                        <h3>Allotment Application</h3>
+                        {{#with candidate}}
+                        <h3>Candidate Information</h3>
                         <table class="table mb-4">
                             <tbody>
                                 <tr>
-                                    <td>Launchpad ID</td>
-                                    <td><strong>{{candidate.id}}</strong></td>
+                                    <td>Launchpad Kerala ID:</td>
+                                    <td><strong>{{id}}</strong></td>
                                 </tr>
                                 <tr>
                                     <td>Rank:</td>
-                                    <td><strong>{{candidate.rank}}</strong></td>
+                                    <td><strong>{{rank}}</strong></td>
                                 </tr>
                                 <tr>
                                     <td>Name:</td>
-                                    <td><strong>{{candidate.name}}</strong></td>
+                                    <td><strong>{{name}}</strong></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-truncate">Registered Email ID</td>
-                                    <td style="word-wrap: break-word;">{{candidate.email}}</td>
+                                    <td class="text-truncate">Registered Email ID:</td>
+                                    <td style="word-wrap: break-word;">{{email}}</td>
                                 </tr>
                                 <tr>
-                                    <td>College/Institution</td>
-                                    <td>{{candidate.college}}</td>
+                                    <td>College/Institution:</td>
+                                    <td>{{college}}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <h3>Application Details:</h3>
+                        <h3>Allotment Details</h3>
+                        {{#if allotment.allotted}}
                         <table class="table mb-4">
-                            <tbody>
-                                {{#each candidate.allotment.preference}}
-                                <tr>
-                                    <td><strong>Perefrence No {{add @index 1}}:</strong></td>
-                                    <td>Pool {{this}}</td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
+                            <tr>
+                                <td>Allotted Pool :</td>
+                                <td><strong>Pool {{allotment.pool}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Location :</td>
+                                <td><strong>{{allotment.location}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Reporting Date :</td>
+                                <td><strong>{{allotment.date}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Reporting Time :</td>
+                                <td><strong>{{allotment.time}}</strong></td>
+                            </tr>
                         </table>
-                    </div>
+                        <div class="content">
 
+                            <h3 class="mt-4">Instructions: </h3>
+                            <ul>
+                                <li><i class='bx bxs-chevron-right'></i>
+                                    <p style="color: rgb(252, 43, 85); font-weight: 700">
+                                        It is mandatory for all allotted candidates to attend the allocated pool. In
+                                        case of
+                                        non-attendance, you will be blacklisted or suspended from future events</p>
+                                </li>
+                                <li><i class='bx bxs-chevron-right'></i>hose who fail to produce the email at the
+                                    venue will not be allowed to sit for the interviews.</li>
+                                <li><i class='bx bxs-chevron-right'></i>
+                                    Please note that you need to enter the [Location] via the main gate only.
+                                </li>
+                                <li><i class='bx bxs-chevron-right'></i><strong style="color: rgb(252, 43, 85); font-weight: 700">All attendees are required to carry the
+                                        copy of
+                                        candidate allotment card</strong>, which will be available soon on the website.</li>
+                                <li><i class='bx bxs-chevron-right'></i>All attendees carry minimum of 5 copies of
+                                    resume. <strong>If you do not receive the allotment card one day before the
+                                        reporting date, kindly contact us immediately.</strong></li>
+                            </ul>
+                        </div>
+                        {{else}}
+                        <p style="color: rgb(252, 43, 85); font-weight: 700">
+                            We are sorry to inform you that you have been placed on the waiting list and will not be able
+                            to attend the offline interview at this time. Although your application was strong, we
+                            received an overwhelming number of qualified applicants and unfortunately, we were unable to
+                            accommodate everyone.
+                        </p>
+                        <p>
+                            We understand that this news may be disappointing, but we encourage you to keep honing your
+                            skills and exploring new opportunities in the field. In the future, we hope that you will
+                            consider applying again for Launchpad Kerala or other similar events.
+                        </p>
+                        <p>Thank you for your interest in Launchpad Kerala and we wish you all the best in your future
+                            endeavors.</p>
+                        {{/if}}
+                        {{/with}}
+                    </div>
                 </div>
             </div>
             <div class="col-12 col-md-10 col-lg-8" data-aos="fade-up" data-aos-delay="100">
