@@ -1,11 +1,13 @@
 <section class="admins dashboard">
     <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-8">
-            <div class="forms">
+            <div class="forms mb-5">
                 <div class="head">
                     <h4>Candidate Data</h4>
                 </div>
                 {{#if message}}<p class="error">{{message}}</p>{{/if}}
+                {{#if success}}<p class="error" style="color:#1dca65; font-weight: 700;">{{success}}</p>{{/if}}
+                {{!-- {{#if message}}<p class="error" {{#if success}} style="color:#1dca65" {{success}}>{{message}}</p>{{/if}} --}}
                 {{#with candidate}}
                 <form class="form" action="/admin/candidates/update/{{id}}" method="post" role="form">
                     <div class="row justify-content-center align-items-center">
@@ -90,17 +92,108 @@
                         <div class="col-12 col-md-6 col-lg-4">
                             <div class="form-group">
                                 <label for="total_backlogs">Total Backlogs:</label>
-                                <input type="number" class="form-control" name="total_backlogs" id="total_backlogs" placeholder="{{accademic.total_backlogs}}"
-                                    value="{{accademic.total_backlogs}}" required>
+                                <input type="number" class="form-control" name="total_backlogs" id="total_backlogs"
+                                    placeholder="{{accademic.total_backlogs}}" value="{{accademic.total_backlogs}}"
+                                    required>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4">
                             <div class="form-group">
                                 <label for="active_backlogs">Active Backlogs:</label>
                                 <input type="number" class="form-control" name="active_backlogs" id="active_backlogs"
-                                    placeholder="{{accademic.active_backlogs}}" value="{{accademic.active_backlogs}}" required>
+                                    placeholder="{{accademic.active_backlogs}}" value="{{accademic.active_backlogs}}"
+                                    required>
                             </div>
                         </div>
+                        <input type="hidden" id="h_lpk_id" name="lpk_id" value="{{id}}">
+                        <div class="col-12 mt-5">
+                            <h5 style="font-weight: 700;">Allotment Details:</h5>
+                        </div>
+                        {{#if allotment.allotted}}
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="allotted">Allottment Status:</label>
+                                <select name="allotted" id="allotted" class="form-control form-select" required>
+                                    <option value="1" selected>Allotted</option>
+                                    <option value="0">Not Allotted</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="pool">Pool:</label>
+                                <select name="pool" id="pool" class="form-control form-select" required>
+                                    <option value="A" {{#if (compare allotment.pool 'A')}}selected{{/if}}>Pool A - Technopark, Trivandrum</option>
+                                    <option value="B" {{#if (compare allotment.pool 'B')}}selected{{/if}}>Pool B - Technopark, Trivandrum</option>
+                                    <option value="C" {{#if (compare allotment.pool 'C')}}selected{{/if}}>Pool C - Infopark, Kochi</option>
+                                    <option value="D" {{#if (compare allotment.pool 'D')}}selected{{/if}}>Pool D - Infopark,</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="r_date">Reporting Date:</label>
+                                <select name="r_date" id="r_date" class="form-control form-select" required disabled>
+                                    <option value="08-05-2023" {{#if (compare allotment.date '08-05-2023')}}selected{{/if}}>08-05-2023</option>
+                                    <option value="13-05-2023" {{#if (compare allotment.date '13-05-2023')}}selected{{/if}}>13-05-2023</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="r_time">Reporting Time:</label>
+                                <select name="r_time" id="r_time" class="form-control form-select" required>
+                                    <option value="9.00 AM" {{#if (compare allotment.time '9.00 AM')}}selected{{/if}}>9.00 AM</option>
+                                    <option value="11.00 AM" {{#if (compare allotment.time '11.00 AM')}}selected{{/if}}>11.00 AM</option>
+                                </select>
+                            </div>
+                        </div>
+                        {{else if allotment.applied}}
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="allotted">Allottment Status:</label>
+                                <select name="allotted" id="allotted" class="form-control form-select" required>
+                                    <option value="1">Allotted</option>
+                                    <option value="0" selected>Not Allotted</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="pool">Pool:</label>
+                                <select name="pool" id="pool" class="form-control form-select" required>
+                                    <option value="A">Pool A - Technopark, Trivandrum</option>
+                                    <option value="B">Pool B - Technopark, Trivandrum</option>
+                                    <option value="C">Pool C - Infopark, Kochi</option>
+                                    <option value="D">Pool D - Infopark,</option>
+                                    <option value="W" selected>Waiting list</option>
+                                </select>
+                            </div>
+                        </div>
+                        {{else}}
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="allotted">Allottment Status:</label>
+                                <select name="allotted" id="allotted" class="form-control form-select" required>
+                                    <option value="1">Allotted</option>
+                                    <option value="0" selected>Not Allotted</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="pool">Pool:</label>
+                                <select name="pool" id="pool" class="form-control form-select" required>
+                                    <option value="A">Pool A - Technopark, Trivandrum</option>
+                                    <option value="B">Pool B - Technopark, Trivandrum</option>
+                                    <option value="C">Pool C - Infopark, Kochi</option>
+                                    <option value="D">Pool D - Infopark,</option>
+                                    <option value="NA" selected>Not Applied</option>
+                                    <option value="W">Waiting list</option>
+                                </select>
+                            </div>
+                        </div>
+                        {{/if}}
 
                         <div class="col-12 mt-4 row">
                             <div class="form-group text-center col-12 col-md-6">

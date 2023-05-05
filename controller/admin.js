@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
 
 const account = {
-    
+
     update: (id, data) => {
         let user = {};
         user.fname = data.fname;
@@ -34,7 +34,7 @@ const account = {
     },
 
     updatePassword: (id, data) => {
-        
+
     }
 }
 
@@ -232,27 +232,27 @@ const candidates = {
     search: (text) => {
         return new Promise((resolve, reject) => {
             // console.log(text)
-            try{
+            try {
                 db.get()
-                .collection(collections.CANDIDATES)
-                .createIndex({ name: "text", id: "text", email: "text"})
-                .then((response) => {
-                    db.get()
-                        .collection(collections.CANDIDATES)
-                        .find(
-                            { $text: { $search: text } }
-                        )
-                        .toArray()
-                        .then((response) => {
-                            // console.log(response)
-                            resolve(response);
-                        }).catch((error) => {
-                            reject(error);
-                        })
-                }).catch((error) => {
-                    reject(error);
-                })
-            }catch{
+                    .collection(collections.CANDIDATES)
+                    .createIndex({ name: "text", id: "text", email: "text" })
+                    .then((response) => {
+                        db.get()
+                            .collection(collections.CANDIDATES)
+                            .find(
+                                { $text: { $search: text } }
+                            )
+                            .toArray()
+                            .then((response) => {
+                                // console.log(response)
+                                resolve(response);
+                            }).catch((error) => {
+                                reject(error);
+                            })
+                    }).catch((error) => {
+                        reject(error);
+                    })
+            } catch {
                 reject("Tiemout");
             }
         })
@@ -264,14 +264,11 @@ const candidates = {
                 .collection(collections.CANDIDATES)
                 .findOne(
                     {
-                        'id':id
+                        'id': id
                     },
                     {
                         projection: {
-                            password: 0,
-                            permission: 0,
-                            events: 0,
-                            flags: 0
+                            _id: 0
                         }
                     }
                 )
@@ -283,6 +280,98 @@ const candidates = {
                 })
         })
     },
+
+    update: (id, data) => {
+        return new Promise((resolve, reject) => {
+            // console.log(data)
+            db.get()
+                .collection(collections.CANDIDATES)
+                .findOne(
+                    {
+                        'id': id
+                    },
+                    {
+                        projection: {
+                            _id: 0
+                        }
+                    }
+                )
+                .then((candidate) => {
+                    candidate.other_id.kkem = data.kkem_id;
+                    candidate.name = data.name;
+                    candidate.email = data.email;
+                    candidate.phone = data.phone;
+                    candidate.college = data.college;
+                    candidate.degree = data.degree;
+                    candidate.year_of_graduation = data.year_of_graduation;
+                    candidate.accademic.cgpa = data.cgpa;
+                    candidate.accademic.total_backlogs = data.total_backlogs;
+                    candidate.accademic.active_backlogs = data.active_backlogs;
+
+                    if (data.allotted == "1") {
+                        candidate.allotment.allotted = true;
+                        candidate.allotment.pool = data.pool;
+                        if (data.pool == "A" || data.pool == "B") {
+                            candidate.allotment.location = "Technopark, Trivandrum";
+                            candidate.allotment.date = "08-05-2023";
+                            if (data.time) {
+                                candidate.allotment.time = data.time;
+                            } else {
+                                candidate.allotment.time = "09:00 AM";
+                            }
+                        } else if (data.pool == "C" || data.pool == "D") {
+                            candidate.allotment.location = "Infopark, Kochi";
+                            candidate.allotment.date = "13-05-2023";
+                            if (data.r_time) {
+                                candidate.allotment.time = data.r_time;
+                            } else {
+                                candidate.allotment.time = "09:00 AM";
+                            }
+                        } else if (data.pool == "W") {
+                            candidate.allotment.waitlisted = true;
+                            candidate.allotment.allotted = false;
+                        } else {
+                            candidate.allotment.allotted = false;
+                        }
+                        if (candidate.allotment.time) {
+                            candidate.allotment.waitlisted = true;
+                        } else {
+                            candidate.allotment.allotted = false;
+                            if (candidate.allotment.pool == "W") {
+                                candidate.allotment.waitlisted = true;
+                            } else {
+                                candidate.allotment.waitlisted = false;
+                            }
+                        }
+                    } else {
+                        candidate.allotment.allotted = false;
+                        if(candidate.applied){
+                            candidate.allotment.waitlisted = true;
+                        }else{
+                            candidate.allotment.waitlisted = false;
+                        }
+                    }
+
+                    db.get()
+                        .collection(collections.CANDIDATES)
+                        .updateOne(
+                            {
+                                'id': id
+                            },
+                            {
+                                $set: candidate,
+                            }
+                        )
+                        .then((response) => {
+                            // console.log(response)
+                            resolve(response);
+                        }
+                        ).catch((error) => {
+                            reject(error);
+                        })
+                })
+        })
+    }
 
 }
 

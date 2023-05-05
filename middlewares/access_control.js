@@ -24,6 +24,7 @@ const admin_vadlidation = () => {
         let user = req.user;
 
         if (user) {
+
             if (user.permissions.admin) {
                 next()
             } else if (user.role == 'admin') {
