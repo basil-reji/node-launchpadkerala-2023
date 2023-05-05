@@ -244,7 +244,7 @@ router.post('/candidates/search', access_controll('candidates', 'view'), functio
         })
 });
 
-router.get('/candidates/:id', access_controll('admins', 'edit'), function (req, res, next) {
+router.get('/candidates/:id', access_controll('candidates', 'view'), function (req, res, next) {
     let user = req.user
     admin.candidates.get(req.params.id)
         .then((candidate) => {
@@ -264,9 +264,69 @@ router.get('/candidates/:id', access_controll('admins', 'edit'), function (req, 
                 ],
                 candidates_page: true,
                 user,
-                candidate
+                candidate,
+                message
             });
         })
+});
+
+router.get('/candidates/edit/:id', access_controll('candidates', 'edit'), function (req, res, next) {
+    let user = req.user
+    let message = req.flash('message')
+    admin.candidates.get(req.params.id)
+        .then((candidate) => {
+            // console.log(response);
+            res.render('admin/candidates/edit', {
+                title: app_name,
+                page_title: 'Candidates',
+                breadcrumbs: [
+                    {
+                        page_name: 'Candidates',
+                        page_link: '/candidates'
+                    },
+                    {
+                        page_name: 'Edit Candidate',
+                        active: true,
+                    }
+                ],
+                candidates_page: true,
+                user,
+                candidate,
+                message
+            });
+        })
+});
+
+router.post('/candidates/update/:id', access_controll('candidates', 'update'), function (req, res, next) {
+    let user = req.user
+    console.log(req.body)
+    if(req.body.id == req.params.id){
+        console.log(req.body)
+        admin.candidates.get(req.params.id)
+            .then((candidate) => {
+                // console.log(response);
+                res.render('admin/candidates/edit', {
+                    title: app_name,
+                    page_title: 'Candidates',
+                    breadcrumbs: [
+                        {
+                            page_name: 'Candidates',
+                            page_link: '/candidates'
+                        },
+                        {
+                            page_name: 'Edit Candidate',
+                            active: true,
+                        }
+                    ],
+                    candidates_page: true,
+                    user,
+                    candidate
+                });
+            })
+    }else{
+        req.flash('message', `Invalid Request, Try again`);
+        res.redirect('/admin/candidates/edit/'+req.params.id)
+    }
 });
 
 module.exports = router;

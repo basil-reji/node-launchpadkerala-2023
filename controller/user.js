@@ -158,7 +158,7 @@ const recruiter = {
                 })
                 .toArray()
                 .then((response) => {
-                    console.log(response)
+                    // console.log(response)
                     resolve(response)
                 }).catch((error) => {
                     reject("Something Went wrong please try again later.")

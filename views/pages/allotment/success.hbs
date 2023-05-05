@@ -10,7 +10,8 @@
                             <strong>
                                 {{#if candidate.allotment.allotted}}
                                 Congratulations!<br>
-                                {{success_message}}
+                                {{success_message}} <br>
+                                Now you can download your Admit Card
                                 {{else}}
                                 <span style="color:rgb(252, 43, 85)">{{failure_message}}</span>
                                 {{/if}}
@@ -64,7 +65,7 @@
                         </table>
                         <div class="content">
 
-                            <h3 class="mt-4">Instructions: </h3>
+                            <h3 class="mt-4">General Instructions: </h3>
                             <ul>
                                 <li><i class='bx bxs-chevron-right'></i>
                                     <p style="color: rgb(252, 43, 85); font-weight: 700">
@@ -72,22 +73,60 @@
                                         case of
                                         non-attendance, you will be blacklisted or suspended from future events</p>
                                 </li>
-                                <li><i class='bx bxs-chevron-right'></i>hose who fail to produce the email at the
-                                    venue will not be allowed to sit for the interviews.</li>
+                                <li><i class='bx bxs-chevron-right'></i>
+                                    <strong style="color: rgb(252, 43, 85); font-weight: 700"> Those who fail to produce
+                                        the allotment card at
+                                        the venue will not be allowed to sit for the interviews.</strong> It is
+                                    mandatory for all
+                                    candidates to carry the allotment card with them on the reporting day.
+                                </li>
                                 <li><i class='bx bxs-chevron-right'></i>
                                     Please note that you need to enter the [Location] via the main gate only.
                                 </li>
-                                <li><i class='bx bxs-chevron-right'></i><strong style="color: rgb(252, 43, 85); font-weight: 700">All attendees are required to carry the
+                                <li><i class='bx bxs-chevron-right'></i><strong
+                                        style="color: rgb(252, 43, 85); font-weight: 700">All attendees are required to
+                                        carry the
                                         copy of
-                                        candidate allotment card</strong>, which will be available soon on the website.</li>
-                                <li><i class='bx bxs-chevron-right'></i>All attendees carry minimum of 5 copies of
-                                    resume. <strong>If you do not receive the allotment card one day before the
+                                        candidate allotment card,</strong>.
+                                </li>
+                                <li><i class='bx bxs-chevron-right'></i><strong
+                                        style="color: rgb(252, 43, 85); font-weight: 700">Entrance through the main gate
+                                        is the only way to access the venue for the offline interviews.</strong>.
+                                </li>
+                                <li><i class='bx bxs-chevron-right'></i>All attendees must carry enough copies
+                                    of your resume. <strong>If you do not receive the allotment card one day before the
                                         reporting date, kindly contact us immediately.</strong></li>
+                                <li><i class='bx bxs-chevron-right'></i> <strong>candidates must report at the
+                                        registration desk on
+                                        or before the reporting time</strong></li>
+                                <li><i class='bx bxs-chevron-right'></i> <strong
+                                        style="color: rgb(252, 43, 85); font-weight: 700"> Please ensure that you bring
+                                        a valid form of
+                                        identification with you to the event.</strong> This can include any
+                                    government-issued ID such
+                                    as a passport, driver's license, or national ID card.</li>
                             </ul>
+                        </div>
+                        <div class="card-footer mt-4">
+                            <div class="button mt-2 row">
+                                <div class="col-12">
+                                    <a href="/assets/doc/Admit Card-{{id}}.pdf" download="Admit Card - {{id}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="ico"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+                                            <path
+                                                d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                                        </svg>
+                                        Download Admit Card
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         {{else}}
                         <p style="color: rgb(252, 43, 85); font-weight: 700">
-                            We are sorry to inform you that you have been placed on the waiting list and will not be able
+                            We are sorry to inform you that you have been placed on the waiting list and will not be
+                            able
                             to attend the offline interview at this time. Although your application was strong, we
                             received an overwhelming number of qualified applicants and unfortunately, we were unable to
                             accommodate everyone.

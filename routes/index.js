@@ -153,6 +153,19 @@ router.get('/allotment/view', function (req, res, next) {
         });
 });
 
+router.get('/allotment/instructions', function (req, res, next) {
+    let message = req.flash('message');
+    res.render('pages/allotment/instructions',
+        {
+            title: `Instructions | ${app_name}`,
+            page_head: 'Instructions',
+            page_nav_name: 'Instructions',
+            allotment_page: true,
+            no_preloader: true,
+            message
+        });
+});
+
 router.post('/allotment/view', function (req, res, next) {
     controller.candidate.viewCandidate(req.body)
         .then((candidate) => {
