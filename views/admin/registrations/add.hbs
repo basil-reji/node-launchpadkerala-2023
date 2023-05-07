@@ -1,0 +1,176 @@
+<section id="admins" class="section mb-4">
+    <div class="container">
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="card p-4 forms">
+                    {{#if message}}<p class="error" style="font-weight: 700;">{{message}}</p>{{/if}}
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate Details</h5>
+
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>Launchpad ID</th>
+                                    <th>{{candidate.id}}</th>
+                                </tr>
+                                <tr>
+                                    <th>KKEM ID</th>
+                                    <th>{{candidate.id}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>{{candidate.rank}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Name:</th>
+                                    <th>{{candidate.name}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Registered Email ID</th>
+                                    <th>{{candidate.email}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Registered Phone Number</th>
+                                    <th>{{candidate.phone}}</th>
+                                </tr>
+                                <tr>
+                                    <th>College/Institution</th>
+                                    <th>{{candidate.college}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>{{candidate.degree}}</th>
+                                </tr>
+                                <tr>
+                                    <td>Branch</td>
+                                    <td>{{candidate.accademic.branch}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Year of Graduation</td>
+                                    <td>{{candidate.year_of_graduation}}</td>
+                                </tr>
+                                <tr>
+                                    <td>CGPA</td>
+                                    <td>{{candidate.accademic.cgpa}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Backlogs</td>
+                                    <td>{{candidate.accademic.total_backlogs}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Backlogs</td>
+                                    <td>{{candidate.accademic.active_backlogs}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        {{#with candidate}}
+                        <form class="form p-0 mb-4" action="/admin/registrations/add/{{id}}" method="post" role="form">
+                            <div class="row p-0 justify-content-center align-items-center">
+                                <input type="hidden" id="h_lpk_id" name="lpk_id" value="{{id}}">
+                                <div class="col-12 my-2">
+                                    <h5 style="font-weight: 700;">Allotment Details:</h5>
+                                </div>
+                                {{#if allotment.allotted}}
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="allotted">Allottment Status:</label>
+                                        <select name="allotted" id="allotted" class="form-control form-select" required
+                                            disabled>
+                                            <option value="1" selected>Allotted</option>
+                                            <option value="0">Not Allotted</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="pool">Pool:</label>
+                                        <select name="pool" id="pool" class="form-control form-select" required>
+                                            <option value="A" {{#if (compare allotment.pool 'A' )}}selected{{/if}}>Pool
+                                                A - Technopark, Trivandrum</option>
+                                            <option value="B" {{#if (compare allotment.pool 'B' )}}selected{{/if}}>Pool
+                                                B - Technopark, Trivandrum</option>
+                                            <option value="C" {{#if (compare allotment.pool 'C' )}}selected{{/if}}>Pool
+                                                C - Infopark, Kochi</option>
+                                            <option value="D" {{#if (compare allotment.pool 'D' )}}selected{{/if}}>Pool
+                                                D - Infopark, Kochi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                {{else if allotment.applied}}
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="allotted">Allottment Status:</label>
+                                        <select name="allotted" id="allotted" class="form-control form-select" required
+                                            disabled>
+                                            <option value="1">Allotted</option>
+                                            <option value="0" selected>Not Allotted</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="pool">Pool:</label>
+                                        <select name="pool" id="pool" class="form-control form-select" required>
+                                            <option value="A">Pool A - Technopark, Trivandrum</option>
+                                            <option value="B">Pool B - Technopark, Trivandrum</option>
+                                            <option value="C">Pool C - Infopark, Kochi</option>
+                                            <option value="D">Pool D - Infopark, Kochi</option>
+                                            <option value="W" selected>Waiting list</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                {{else}}
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="allotted">Allottment Status:</label>
+                                        <select name="allotted" id="allotted" class="form-control form-select" required
+                                            disabled>
+                                            <option value="1">Allotted</option>
+                                            <option value="0" selected>Not Allotted</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="pool">Pool:</label>
+                                        <select name="pool" id="pool" class="form-control form-select" required>
+                                            <option value="A">Pool A - Technopark, Trivandrum</option>
+                                            <option value="B">Pool B - Technopark, Trivandrum</option>
+                                            <option value="C">Pool C - Infopark, Kochi</option>
+                                            <option value="D">Pool D - Infopark, Kochi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                {{/if}}
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="remarks">Remarks:</label>
+                                        <textarea name="remarks" id="remarks" class="form-control" cols="30" rows="5"
+                                            placeholder="Reamarks"></textarea>
+                                    </div>
+                                </div>
+
+
+                                <div class="row justify-content-center col-12">
+                                    <div class="form-group text-center mt-4 col-12 col-md-6">
+                                        <a href="/admin/registrations/candidates/view/{{id}}" class="btn btn">Edit
+                                            Candidate</a>
+                                    </div>
+                                    <div class="form-group text-center mt-4 col-12 col-md-6">
+                                        <button type="submit" class="btn-primary">Confirm Registration</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        {{/with}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center align-items-center">
+                <a href="/admin/candidates" class="btn">Go Back</a>
+            </div>
+        </div>
+    </div>
+</section>

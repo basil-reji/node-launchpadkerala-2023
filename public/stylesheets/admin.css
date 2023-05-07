@@ -530,13 +530,20 @@ form .btn-primary:hover {
   border: none;
   border-radius: 0.1rem;
   box-shadow: 0px 0 30px rgba(6, 40, 61, 0.1);
+  transition: all 0.3s ease-in-out;
 }
 .card .card-header,
 .card .card-footer {
-  border-color: #DFF6FF;
+  border: none;
   background-color: #fff;
   color: rgba(71, 181, 255, 0.5);
   padding: 1rem;
+}
+.card .card-header h3 {
+  color: #06283D;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
 }
 .card .card-title {
   padding: 1.2rem 0 1rem 0;
@@ -551,10 +558,45 @@ form .btn-primary:hover {
   font-weight: 400;
 }
 .card .card-body {
-  padding: 0 1.2rem 1.2rem 1.2rem;
+  padding: 0 1.5rem;
 }
 .card .card-img-overlay {
   background-color: rgba(255, 255, 255, 0.6);
+}
+.card:hover {
+  box-shadow: 0px 0 30px rgba(6, 40, 61, 0.15);
+}
+
+.btn {
+  width: 100%;
+  border: 2px solid #06283D;
+  background-color: transparent;
+  padding: 0.5rem 1.5rem;
+  margin: 0;
+  margin-top: 1rem;
+  color: #06283D;
+  transition: all 0.3s ease-in-out;
+}
+.btn:hover {
+  color: #fff;
+  background-color: #06283D;
+}
+
+.btn-primary {
+  width: 100%;
+  border: 2px solid #47b5ff;
+  background-color: transparent;
+  padding: 0.5rem 1.5rem;
+  margin: 0;
+  margin-top: 1rem;
+  background-color: #47b5ff;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+.btn-primary:hover {
+  border-color: #1363DF;
+  color: #fff;
+  background-color: #1363DF;
 }
 
 .nav-tabs-bordered {

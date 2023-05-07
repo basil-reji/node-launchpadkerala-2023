@@ -7,13 +7,25 @@
     border: none;
     border-radius: 0.1rem;
     box-shadow: 0px 0 30px rgba($color: $color_4, $alpha: 0.1);
+    transition: all 0.3s ease-in-out;
+    // padding: 1rem;
 
     .card-header,
     .card-footer {
-        border-color: $color_1;
+        border: none;
         background-color: $white;
         color: rgba($color: $color_2, $alpha: 0.5);
         padding: 1rem;
+    }
+
+    .card-header {
+        h3 {
+            color: $color_4;
+            font-family: $font_family_2;
+            font-size: 1.5rem;
+            font-weight: 800;
+            // margin-bottom: 0.5rem;
+        }
     }
 
     .card-title {
@@ -31,13 +43,51 @@
     }
 
     .card-body {
-        padding: 0 1.2rem 1.2rem 1.2rem;
+        padding: 0 1.5rem;
     }
 
     .card-img-overlay {
         background-color: rgba(255, 255, 255, 0.6);
     }
 
+    &:hover {
+        box-shadow: 0px 0 30px rgba($color: $color_4, $alpha: 0.15);
+    }
+
+}
+
+.btn {
+    width: 100%;
+    border: 2px solid $color_4;
+    background-color: transparent;
+    padding: 0.5rem 1.5rem;
+    margin: 0;
+    margin-top: 1rem;
+    color: $color_4;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        color: $white;
+        background-color: $color_4;
+    }
+}
+
+.btn-primary {
+    width: 100%;
+    border: 2px solid rgba($color: $color_2, $alpha: 1);
+    background-color: transparent;
+    padding: 0.5rem 1.5rem;
+    margin: 0;
+    margin-top: 1rem;
+    background-color: rgba($color: $color_2, $alpha: 1);
+    color: $white;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        border-color: $color_3;
+        color: $white;
+        background-color: $color_3;
+    }
 }
 
 .nav-tabs-bordered {
@@ -134,7 +184,7 @@
                 }
             }
 
-            &:last-child{
+            &:last-child {
                 padding-bottom: 0;
                 margin-bottom: 0;
             }
@@ -157,7 +207,7 @@
             }
         }
 
-        .btn-primary{
+        .btn-primary {
             width: 100%;
             border: 2px solid rgba($color: $color_2, $alpha: 1);
             background-color: transparent;
@@ -185,12 +235,12 @@
         }
     }
 
-    &.inner_form{
+    &.inner_form {
         padding: 0rem;
         margin: 0rem;
         box-shadow: none;
 
-        form{
+        form {
             margin: 0;
             padding: 0;
             box-shadow: none;

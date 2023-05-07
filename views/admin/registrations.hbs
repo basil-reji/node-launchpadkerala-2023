@@ -1,0 +1,39 @@
+<section id="admins" class="section">
+    <div class="container">
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card p-3">
+                    <div class="card-header">
+                        <h3>
+                            Registrations
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Total Registrations</td>
+                                    <td>{{registrations.total}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Registrations - Trivandrum</td>
+                                    <td>{{registrations.trivandurm}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Registrations - Kochi</td>
+                                    <td>{{registrations.kochi}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/admin/registrations/find" class="btn w-100">Find Candidates</a>
+                        <a href="/admin/registrations/candidates/find" class="btn btn-primary w-100">Add Registration</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center align-items-center">
+            </div>
+        </div>
+    </div>
+</section>

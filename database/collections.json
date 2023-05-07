@@ -3,5 +3,6 @@
     "MESSAGE": "messages",
     "CANDIDATES": "candidates",
     "RECRUITERS": "recruiters",
-    "INTERVIEWS": "interviews"
+    "INTERVIEWS": "interviews",
+    "REGISTRATIONS": "registrations"
 }

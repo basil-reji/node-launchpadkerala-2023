@@ -345,12 +345,60 @@ const candidates = {
                         }
                     } else {
                         candidate.allotment.allotted = false;
-                        if(candidate.applied){
+                        if (candidate.applied) {
                             candidate.allotment.waitlisted = true;
-                        }else{
+                        } else {
                             candidate.allotment.waitlisted = false;
                         }
                     }
+
+                    db.get()
+                        .collection(collections.CANDIDATES)
+                        .updateOne(
+                            {
+                                'id': id
+                            },
+                            {
+                                $set: candidate,
+                            }
+                        )
+                        .then((response) => {
+                            // console.log(response)
+                            resolve(response);
+                        }
+                        ).catch((error) => {
+                            reject(error);
+                        })
+                })
+        })
+    },
+
+    partialUpdate: (id, data) => {
+        return new Promise((resolve, reject) => {
+            // console.log(data)
+            db.get()
+                .collection(collections.CANDIDATES)
+                .findOne(
+                    {
+                        'id': id
+                    },
+                    {
+                        projection: {
+                            _id: 0
+                        }
+                    }
+                )
+                .then((candidate) => {
+                    candidate.other_id.kkem = data.kkem_id;
+                    candidate.name = data.name;
+                    candidate.email = data.email;
+                    candidate.phone = data.phone;
+                    candidate.college = data.college;
+                    candidate.degree = data.degree;
+                    candidate.year_of_graduation = data.year_of_graduation;
+                    candidate.accademic.cgpa = data.cgpa;
+                    candidate.accademic.total_backlogs = data.total_backlogs;
+                    candidate.accademic.active_backlogs = data.active_backlogs;
 
                     db.get()
                         .collection(collections.CANDIDATES)
@@ -375,9 +423,108 @@ const candidates = {
 
 }
 
+const registrations = {
+
+    get: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get()
+                .collection(collections.REGISTRATIONS)
+                .findO(
+                    {
+                        'id': id
+                    },
+                    {
+                        projection: {
+                            _id: 0
+                        }
+                    }
+                )
+                .toArray()
+                .then((response) => {
+                    // console.log(response)
+                    resolve(response);
+                }).catch((error) => {
+                    reject(error);
+                })
+        })
+    },
+
+    add: (id, data) => {
+        return new Promise((resolve, reject) => {
+            // console.log(data)
+            // console.log(id)
+            // console.log(id.length)
+            db.get()
+                .collection(collections.CANDIDATES)
+                .findOne(
+                    {
+                        'id': id
+                    },
+                    {
+                        projection: {
+                            _id: 0
+                        }
+                    }
+                )
+                .then((candidate) => {
+                    let location = '';
+                    if (data.pool == 'A' || data.pool == 'B') {
+                        location = 'Trivandrum';
+                    } else if (data.pool == 'C' || data.pool == 'D') {
+                        location = 'Kochi';
+                    } else {
+                        location = '';
+                        reject('Invalid Pool');
+                    }
+
+                    let registration = {
+                        _id: new ObjectId(),
+                        id: id,
+                        name: candidate.name,
+                        time: new Date(),
+                        pool: data.pool,
+                        location: location,
+                        remarks: data.remarks,
+                    }
+                    // console.log(registration);
+
+                    db.get()
+                        .collection(collections.REGISTRATIONS)
+                        .insertOne(registration)
+                        .then((response) => {
+                            // console.log(response)
+                            db.get()
+                                .collection(collections.REGISTRATIONS)
+                                .findOne(
+                                    {
+                                        '_id': registration._id
+                                    },
+                                    {
+                                        projection: {
+                                            _id: 0
+                                        }
+                                    }
+                                )
+                                .then((candidate) => {
+                                    resolve(candidate);
+                                }).catch((error) => {
+                                    reject(error);
+                                })
+                        }).catch((error) => {
+                            reject(error);
+                        })
+                })
+                .catch((error) => {
+                    reject("Something went wrong!");
+                })
+        })
+    },
+}
+
 module.exports = {
     account,
     admins,
     message,
-    candidates
+    candidates,
+    registrations
 }

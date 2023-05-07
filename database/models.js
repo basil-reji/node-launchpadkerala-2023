@@ -62,7 +62,7 @@ const user = {
                 edit: true,
                 update: true,
             },
-            recuruiter: {
+            recuruiters: {
                 all: false,
                 view: true,
                 add: true,
@@ -76,7 +76,7 @@ const user = {
                 edit: true,
                 update: true,
             },
-            allotments: {
+            registrations: {
                 all: false,
                 view: true,
                 add: true,
@@ -120,13 +120,13 @@ const user = {
             candidates: {
                 all: true,
             },
-            recuruiter: {
+            recuruiters: {
                 all: true,
             },
             interviews: {
                 all: true,
             },
-            allotments: {
+            registrations: {
                 all: true,
             },
             admins: {
@@ -142,6 +142,19 @@ const user = {
         }
     },
 };
+
+// const registrations = {
+//     registration: {
+//         _id : '',
+//         id: '',
+//         name: '',
+//         time: '',
+//         date: '',
+//         pool: '',
+//         location: '',
+//         description: '',
+//     }
+// }
 
 module.exports.models = {
     user

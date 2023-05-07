@@ -1,0 +1,134 @@
+<section id="admins" class="section mb-5">
+    <div class="container">
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="forms">
+                    <div class="head">
+                        <h4>Candidate Data</h4>
+                    </div>
+                    {{#if message}}<p class="error">{{message}}</p>{{/if}}
+                    {{#if success}}<p class="error" style="color:#1dca65; font-weight: 700;">{{success}}</p>{{/if}}
+                    {{!-- {{#if message}}<p class="error" {{#if success}} style="color:#1dca65" {{success}}>{{message}}
+                    </p>
+                    {{/if}} --}}
+                    {{#with candidate}}
+                    <form class="form" action="/admin/registrations/candidates/update/{{id}}" method="post" role="form">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="lpk_id">Launchpad Kerala ID:</label>
+                                    <input type="text" class="form-control" name="lpk_id" id="lpk_id"
+                                        placeholder="{{id}}" value="{{id}}" required disabled>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="name">Rank:</label>
+                                    <input type="text" class="form-control" name="rank" id="rank" placeholder="{{rank}}"
+                                        value="{{rank}}" required disabled>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="name">KKEM ID:</label>
+                                    <input type="text" class="form-control" name="kkem_id" id="kkem_id"
+                                        placeholder="{{other_id.kkem}}" value="{{other_id.kkem}}">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="name">Full Name:</label>
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="{{name}}"
+                                        value="{{name}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" class="form-control" name="email" id="email"
+                                        placeholder="{{email}}" value="{{email}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="phone">Phone:</label>
+                                    <input type="number" class="form-control" name="phone" id="phone"
+                                        placeholder="{{phone}}" value="{{phone}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="college">College/Institution:</label>
+                                    <input type="text" class="form-control" name="college" id="college"
+                                        placeholder="{{college}}" value="{{college}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="degree">Degree:</label>
+                                    <input type="text" class="form-control" name="degree" id="degree"
+                                        placeholder="{{degree}}" value="{{degree}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="year_of_graduation">Year of Graduation:</label>
+                                    <input type="number" class="form-control" name="year_of_graduation"
+                                        id="year_of_graduation" placeholder="{{year_of_graduation}}"
+                                        value="{{year_of_graduation}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="branch">Branch:</label>
+                                    <input type="text" class="form-control" name="branch" id="branch"
+                                        placeholder="{{accademic.branch}}" value="{{accademic.branch}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="cgpa">CGPA:</label>
+                                    <input type="number" class="form-control" name="cgpa" id="cgpa"
+                                        placeholder="{{accademic.cgpa}}" value="{{accademic.cgpa}}" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="total_backlogs">Total Backlogs:</label>
+                                    <input type="number" class="form-control" name="total_backlogs" id="total_backlogs"
+                                        placeholder="{{accademic.total_backlogs}}" value="{{accademic.total_backlogs}}"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="active_backlogs">Active Backlogs:</label>
+                                    <input type="number" class="form-control" name="active_backlogs"
+                                        id="active_backlogs" placeholder="{{accademic.active_backlogs}}"
+                                        value="{{accademic.active_backlogs}}" required>
+                                </div>
+                            </div>
+                            <input type="hidden" id="h_lpk_id" name="lpk_id" value="{{id}}">
+                            <div class="col-12 mt-4 row">
+                                <div class="form-group text-center mt-4 col-12 col-md-6">
+                                    <button type="submit" class="btn">Update Candidate</button>
+                                </div>
+                                <div class="form-group text-center mt-4 col-12 col-md-6">
+                                    <a href="/admin/registrations/add/{{id}}" class="btn btn-primary">Add Registration</a>
+                                </div>
+                            </div>
+                    </form>
+                    {{/with}}
+
+                </div>
+
+            </div>
+            <div class="col-12 row justify-content-center align-items-center">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <a href="/admin/registrations/candidates/find" class="btn">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

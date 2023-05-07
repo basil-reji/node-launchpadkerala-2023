@@ -28,6 +28,7 @@ const admin_vadlidation = () => {
             if (user.permissions.admin) {
                 next()
             } else if (user.role == 'admin') {
+                next()
             } else {
                 res.redirect('/')
             }

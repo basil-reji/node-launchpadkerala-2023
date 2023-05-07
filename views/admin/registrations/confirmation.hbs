@@ -1,0 +1,35 @@
+<section id="admins" class="section mb-4">
+    <div class="container">
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="card p-4 forms">
+                    {{#if message}}<p class="error" style="font-weight: 700;">{{message}}</p>{{/if}}
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate Details</h5>
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>Launchpad ID</th>
+                                    <th>{{candidate.id}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Name:</th>
+                                    <th>{{candidate.name}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Date:</th>
+                                    <th>{{}}</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center align-items-center">
+                <a href="/admin/candidates" class="btn">Go Back</a>
+            </div>
+        </div>
+    </div>
+</section>

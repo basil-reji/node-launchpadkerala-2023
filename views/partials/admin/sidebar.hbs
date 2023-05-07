@@ -13,6 +13,38 @@
                     <h5>Dashboard</h5>
                 </a>
             </li>
+            {{#if user.permissions.registrations.all}}
+            <li>
+                <a href="/admin/registrations/" {{#if registrations_page}}class="active"{{/if}}>
+                    <i class="ri-edit-box-{{#if registrations_page}}fill{{else}}line{{/if}} sico"></i>
+                    <h5>Interviews</h5>
+                </a>
+            </li>
+            {{else if user.permissions.registrations.view}}
+            <li>
+                <a href="/admin/registrations/" {{#if registrations_page}}class="active"{{/if}}>
+                    <i class="ri-edit-box-{{#if registrations_page}}fill{{else}}line{{/if}} sico"></i>
+                    <h5>Interviews</h5>
+                </a>
+            </li>
+            {{else}}
+            {{/if}}
+            {{#if user.permissions.interviews.all}}
+            <li>
+                <a href="/admin/interviews/" {{#if interviews_page}}class="active"{{/if}}>
+                    <i class="ri-team-{{#if interviews_page}}fill{{else}}line{{/if}} sico"></i>
+                    <h5>Interviews</h5>
+                </a>
+            </li>
+            {{else if user.permissions.interviews.view}}
+            <li>
+                <a href="/admin/interviews/" {{#if interviews_page}}class="active"{{/if}}>
+                    <i class="ri-team-{{#if interviews_page}}fill{{else}}line{{/if}} sico"></i>
+                    <h5>Interviews</h5>
+                </a>
+            </li>
+            {{else}}
+            {{/if}}
             {{#if user.permissions.messages.all}}
             <li>
                 <a href="/admin/messages/" {{#if messages_page}}class="active"{{/if}}>
@@ -33,14 +65,14 @@
             {{#if user.permissions.candidates.all}}
             <li>
                 <a href="/admin/candidates/" {{#if candidates_page}}class="active"{{/if}}>
-                    <i class="ri-team-{{#if message_page}}fill{{else}}line{{/if}} sico"></i>
+                    <i class="ri-contacts-book-2-{{#if candidates_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Canidates</h5>
                 </a>
             </li>
             {{else if user.permissions.candidates.view}}
             <li>
                 <a href="/admin/candidates/" {{#if candidates_page}}class="active"{{/if}}>
-                    <i class="ri-team-{{#if message_page}}fill{{else}}line{{/if}} sico"></i>
+                    <i class="ri-contacts-book-2-{{#if candidates_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Canidates</h5>
                 </a>
             </li>

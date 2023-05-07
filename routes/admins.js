@@ -274,7 +274,6 @@ router.get('/candidates/:id', access_controll('candidates', 'view'), function (r
 router.get('/candidates/edit/:id', access_controll('candidates', 'edit'), function (req, res, next) {
     let user = req.user
     let message = req.flash('message')
-    let success = req.flash('success')
     admin.candidates.get(req.params.id)
         .then((candidate) => {
             // console.log(response);
@@ -303,7 +302,7 @@ router.post('/candidates/update/:id', access_controll('candidates', 'update'), f
     let user = req.user
     // console.log(req.body)
     // console.log(req.params.id)
-    if(req.body.lpk_id == req.params.id){
+    if (req.body.lpk_id == req.params.id) {
         // console.log(req.body)
         admin.candidates.update(req.params.id, req.body)
             .then((candidate) => {
@@ -324,24 +323,362 @@ router.post('/candidates/update/:id', access_controll('candidates', 'update'), f
                                 }
                             ],
                             candidates_page: true,
-                            success : 'Candidate Updated Successfully!',
+                            success: 'Candidate Updated Successfully!',
                             user,
                             candidate
                         });
                     })
                     .catch((error) => {
                         console.log(error)
-                        res.redirect('/admin/candidates/edit/'+req.params.id);
+                        res.redirect('/admin/candidates/edit/' + req.params.id);
                     })
             })
             .catch((error) => {
                 console.log(error)
                 req.flash('message', error);
-                res.redirect('/admin/candidates/edit/'+req.params.id);
+                res.redirect('/admin/candidates/edit/' + req.params.id);
             })
-    }else{
+    } else {
         req.flash('message', `Invalid Request, Try again`);
-        res.redirect('/admin/candidates/edit/'+req.params.id)
+        res.redirect('/admin/candidates/edit/' + req.params.id)
+    }
+});
+
+
+//Interview Registrations
+router.get('/registrations', access_controll('registrations', 'view'), function (req, res, next) {
+    let user = req.user
+    res.render('admin/registrations', {
+        title: app_name,
+        page_title: 'Registrations',
+        breadcrumbs: [
+            {
+                page_name: 'Registrations',
+                active: true,
+            }
+        ],
+        registrations_page: true,
+        user,
+    });
+})
+
+router.get('/registrations/candidates/find', access_controll('registrations', 'view'), function (req, res, next) {
+    let user = req.user;
+    let message = req.flash('message');
+    res.render('admin/registrations/find_candidates', {
+        title: app_name,
+        page_title: 'Registrations',
+        breadcrumbs: [
+            {
+                page_name: 'Registrations',
+                page_link: '/registrations'
+            },
+            {
+                page_name: 'Find Candidates',
+                active: true,
+            }
+        ],
+        registrations_page: true,
+        user,
+        message
+    });
+})
+
+router.post('/registrations/candidates/search', access_controll('candidates', 'view'), function (req, res, next) {
+    let user = req.user
+    admin.candidates.search(req.body.text)
+        .then((candidates) => {
+            if(candidates.length == 0){
+                req.flash('message', 'No Candidates Found');
+                res.redirect('/admin/registrations/candidates/find');
+            }else if(candidates.length == 1){
+                res.redirect('/admin/registrations/add/' + candidates[0].id);
+            }else{
+                res.render('admin/registrations/view_candidates', {
+                    title: app_name,
+                    page_title: 'Registrations',
+                    breadcrumbs: [
+                        {
+                            page_name: 'Registrations',
+                            page_link: '/registrations'
+                        },
+                        {
+                            page_name: 'Find Candidates',
+                            active: true,
+                        }
+                    ],
+                    registrations_page: true,
+                    candidates,
+                    user,
+                });
+            }
+        })
+});
+
+router.get('/registrations/candidates/view/:id', access_controll('candidates', 'view'), function (req, res, next) {
+    let user = req.user
+    let message = req.flash('message')
+    admin.candidates.get(req.params.id)
+        .then((candidate) => {
+            // console.log(response);
+            res.render('admin/registrations/view_candidate', {
+                title: app_name,
+                page_title: 'Registration',
+                breadcrumbs: [
+                    {
+                        page_name: 'Registrations',
+                        page_link: '/registrations'
+                    },
+                    {
+                        page_name: 'Candidate',
+                        active: true,
+                    }
+                ],
+                registrations_page: true,
+                user,
+                candidate,
+                message
+            });
+        })
+});
+
+router.post('/registrations/candidates/update/:id', access_controll('candidates', 'update'), function (req, res, next) {
+    let user = req.user
+    admin.candidates.partialUpdate(req.params.id, req.body)
+        .then((response) => {
+            // console.log(response);
+            admin.candidates.get(req.params.id)
+                .then((candidate) => {
+                    res.render('admin/registrations/view_candidate', {
+                        title: app_name,
+                        page_title: 'Registration',
+                        breadcrumbs: [
+                            {
+                                page_name: 'Registrations',
+                                page_link: '/registrations'
+                            },
+                            {
+                                page_name: 'Candidate',
+                                active: true,
+                            }
+                        ],
+                        registrations_page: true,
+                        user,
+                        candidate,
+                        success: 'Candidate Updated Successfully!'
+                    });
+                }).catch((error) => {
+                    // console.log(error)
+                    req.flash('message', error);
+                    res.redirect('/admin/registrations/candidates/view/' + req.params.id);
+                })
+        }).catch((error) => {
+            // console.log(error)
+            req.flash('message', error);
+            res.redirect('/admin/registrations/candidates/view/' + req.params.id);
+        })
+});
+
+router.get('/registrations/add/:id', access_controll('registrations', 'add'), function (req, res, next) {
+    let user = req.user
+    let message = req.flash('message')
+    // console.log(message)
+    admin.candidates.get(req.params.id)
+        .then((candidate) => {
+            // console.log(response);
+            res.render('admin/registrations/add', {
+                title: app_name,
+                page_title: 'Registrations',
+                breadcrumbs: [
+                    {
+                        page_name: 'Registrations',
+                        page_link: '/registrations'
+                    },
+                    {
+                        page_name: 'Add Registration',
+                        active: true,
+                    }
+                ],
+                registrations_page: true,
+                user,
+                candidate,
+                message
+            });
+        })
+});
+
+router.post('/registrations/add/:id', access_controll('registrations', 'add'), function (req, res, next) {
+    let user = req.user
+    // console.log(req.body)
+    // console.log(req.params.id)
+    if (req.body.lpk_id == req.params.id) {
+        admin.registrations.add(req.params.id, req.body)
+            .then((candidate) => {
+                console.log(candidate);
+                res.render('admin/registrations/confirmation', {
+                    title: app_name,
+                    page_title: 'Registrations',
+                    breadcrumbs: [
+                        {
+                            page_name: 'Registrations',
+                            page_link: '/registrations'
+                        },
+                        {
+                            page_name: 'Confirmation Page',
+                            active: true,
+                        }
+                    ],
+                    registrations_page: true,
+                    success: 'Candidate Registered Successfully!',
+                    user,
+                    candidate
+                });
+            })
+            .catch((error) => {
+                // console.log("Error")
+                req.flash('message', error);
+                res.redirect('/admin/registrations/add/' + req.params.id);
+            })
+    } else {
+        req.flash('message', "Invalid Request, Try again");
+        res.redirect('/admin/registrations/add/' + req.params.id);
+    }
+});
+
+//interviews
+router.get('/interviews', access_controll('interviews', 'view'), function (req, res, next) {
+    let user = req.user
+    res.render('admin/interviews', {
+        title: app_name,
+        page_title: 'Interviews',
+        breadcrumbs: [
+            {
+                page_name: 'Interviews',
+                active: true,
+            }
+        ],
+        interviews_page: true,
+        user,
+    });
+});
+
+router.post('/interviews/search', access_controll('interviews', 'view'), function (req, res, next) {
+    let user = req.user
+    admin.interviews.search(req.body.text)
+        .then((interviews) => {
+            res.render('admin/interviews/view', {
+                title: app_name,
+                page_title: 'Interviews',
+                breadcrumbs: [
+                    {
+                        page_name: 'Interviews',
+                        active: true,
+                    }
+                ],
+                interviews_page: true,
+                interviews,
+                user,
+            });
+        })
+});
+
+router.get('/interviews/:id', access_controll('interviews', 'view'), function (req, res, next) {
+    let user = req.user
+    let message = req.flash('message')
+    admin.interviews.get(req.params.id)
+        .then((candidate) => {
+            // console.log(response);
+            res.render('admin/interviews/view_one', {
+                title: app_name,
+                page_title: 'Interviews',
+                breadcrumbs: [
+                    {
+                        page_name: 'Interviews',
+                        page_link: '/interviews'
+                    },
+                    {
+                        page_name: 'View Candidate',
+                        active: true,
+                    }
+                ],
+                interviews_page: true,
+                user,
+                candidate,
+                message
+            });
+        })
+});
+
+router.get('/interviews/edit/:id', access_controll('interviews', 'edit'), function (req, res, next) {
+    let user = req.user
+    let message = req.flash('message')
+    admin.interviews.get(req.params.id)
+        .then((candidate) => {
+            // console.log(response);
+            res.render('admin/interviews/edit', {
+                title: app_name,
+                page_title: 'Interviews',
+                breadcrumbs: [
+                    {
+                        page_name: 'Interviews',
+                        page_link: '/interviews'
+                    },
+                    {
+                        page_name: 'Edit Candidate',
+                        active: true,
+                    }
+                ],
+                interviews_page: true,
+                user,
+                candidate,
+                message
+            });
+        })
+});
+
+router.post('/interviews/update/:id', access_controll('interviews', 'update'), function (req, res, next) {
+    let user = req.user
+    // console.log(req.body)
+    // console.log(req.params.id)
+    if (req.body.lpk_id == req.params.id) {
+        // console.log(req.body)
+        admin.interviews.update(req.params.id, req.body)
+            .then((candidate) => {
+                // console.log(response);
+                admin.interviews.get(req.params.id)
+                    .then((candidate) => {
+                        res.render('admin/interviews/edit', {
+                            title: app_name,
+                            page_title: 'Interviews',
+                            breadcrumbs: [
+                                {
+                                    page_name: 'Interviews',
+                                    page_link: '/interviews'
+                                },
+                                {
+                                    page_name: 'Edit Candidate',
+                                    active: true,
+                                }
+                            ],
+                            interviews_page: true,
+                            success: 'Candidate Updated Successfully!',
+                            user,
+                            candidate
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        res.redirect('/admin/interviews/edit/' + req.params.id);
+                    })
+            })
+            .catch((error) => {
+                console.log(error)
+                req.flash('message', error);
+                res.redirect('/admin/interviews/edit/' + req.params.id);
+            })
+    } else {
+        req.flash('message', `Invalid Request, Try again`);
+        res.redirect('/admin/interviews/edit/' + req.params.id)
     }
 });
 
