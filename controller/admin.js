@@ -47,7 +47,7 @@ const admins = {
                 .find(
                     {
                         'role': {
-                            '$in': ['admin', 'super_admin']
+                            '$in': ['admin', 'super_admin', 'recruiter', 'registration_volunteer']
                         }
                     },
                     {
@@ -96,12 +96,21 @@ const admins = {
     },
 
     add: (inf) => {
+        // console.log(inf)
         return new Promise(async (resolve, reject) => {
             let user = models.user.user;
             if (inf.role == 'super_admin') {
                 user = models.user.super_admin;
-            } else {
+            } else if (inf.role == 'admin') {
                 user = models.user.admin;
+            } else if (inf.role == 'recruiter') {
+                user = models.user.recruiter;
+                user.id = inf.cid;
+                user.pool = inf.pool;
+            } else if (info.role == 'registration_volunteer') {
+                user = models.user.reg_volunteer;
+            } else {
+                user = models.user.user;
             }
             user._id = new ObjectId();
             user.fname = inf.fname;
@@ -128,12 +137,30 @@ const admins = {
             user.fname = data.fname;
             user.sname = data.sname;
             user.role = model.role;
+            user.status = data.status;
         } else if (data.role == 'super_admin') {
             let model = models.user.super_admin;
             user.permissions = model.permissions;
             user.fname = data.fname;
             user.sname = data.sname;
             user.role = model.role;
+            user.status = data.status;
+        } else if (data.role == 'recruiter') {
+            let model = models.user.recruiter;
+            user.id = data.cid;
+            user.pool = data.pool;
+            user.permissions = model.permissions;
+            user.fname = data.fname;
+            user.sname = data.sname;
+            user.role = model.role;
+            user.status = data.status;
+        } else if (data.role == 'registration_volunteer') {
+            let model = models.user.reg_volunteer;
+            user.permissions = model.permissions;
+            user.fname = data.fname;
+            user.sname = data.sname;
+            user.role = model.role;
+            user.status = data.status;
         } else {
             user = {}
         }
@@ -298,6 +325,7 @@ const candidates = {
                 )
                 .then((candidate) => {
                     candidate.other_id.kkem = data.kkem_id;
+                    candidate.other_id.aadhar = data.aadhar_id;
                     candidate.name = data.name;
                     candidate.email = data.email;
                     candidate.phone = data.phone;
@@ -390,6 +418,7 @@ const candidates = {
                 )
                 .then((candidate) => {
                     candidate.other_id.kkem = data.kkem_id;
+                    candidate.other_id.aadhar = data.aadhar_id;
                     candidate.name = data.name;
                     candidate.email = data.email;
                     candidate.phone = data.phone;
@@ -429,7 +458,7 @@ const registrations = {
         return new Promise((resolve, reject) => {
             db.get()
                 .collection(collections.REGISTRATIONS)
-                .findO(
+                .findOne(
                     {
                         'id': id
                     },
@@ -439,7 +468,6 @@ const registrations = {
                         }
                     }
                 )
-                .toArray()
                 .then((response) => {
                     // console.log(response)
                     resolve(response);
@@ -449,7 +477,41 @@ const registrations = {
         })
     },
 
-    add: (id, data) => {
+    getCount: () => {
+        return new Promise((resolve, reject) => {
+            db.get()
+                .collection(collections.REGISTRATIONS)
+                .find()
+                .toArray()
+                .then((registrations) => {
+                    let count = {
+                        total: registrations.length,
+                        A: 0,
+                        B: 0,
+                        C: 0,
+                        D: 0,
+                        kochi: 0,
+                        trivandrum: 0,
+                    }
+
+                    registrations.forEach((registration) => {
+                        count[registration.pool] += 1;
+                        if (registration.location == 'Kochi') {
+                            count.kochi += 1;
+                        } else if (registration.location == 'Trivandrum') {
+                            count.trivandrum += 1;
+                        }
+                    })
+
+                    resolve(count);
+
+                }).catch((error) => {
+                    reject(error);
+                })
+        })
+    },
+
+    add: (id, data, admin) => {
         return new Promise((resolve, reject) => {
             // console.log(data)
             // console.log(id)
@@ -485,6 +547,10 @@ const registrations = {
                         pool: data.pool,
                         location: location,
                         remarks: data.remarks,
+                        registered_by: {
+                            id: admin._id,
+                            name: admin.fname + ' ' + admin.sname,
+                        },
                     }
                     // console.log(registration);
 
@@ -519,12 +585,182 @@ const registrations = {
                 })
         })
     },
+
+    search: (text) => {
+        return new Promise((resolve, reject) => {
+            // console.log(text)
+            try {
+                db.get()
+                    .collection(collections.REGISTRATIONS)
+                    .createIndex({ name: "text", id: "text", email: "text" })
+                    .then((response) => {
+                        db.get()
+                            .collection(collections.REGISTRATIONS)
+                            .find(
+                                { $text: { $search: text } }
+                            )
+                            .toArray()
+                            .then((response) => {
+                                // console.log(response)
+                                resolve(response);
+                            }).catch((error) => {
+                                reject(error);
+                            })
+                    }).catch((error) => {
+                        reject(error);
+                    })
+            } catch {
+                reject("Tiemout");
+            }
+        })
+    },
+}
+
+const interviews = {
+    add: (info) => {
+        return new Promise((resolve, reject) => {
+            // console.log(info)
+
+            db.get()
+                .collection(collections.INTERVIEWS)
+                .findOne(
+                    {
+                        'id': info.id
+                    },
+                )
+                .then((candidate) => {
+                    // console.log(info)
+                    if (candidate) {
+                        candidate.pools.includes(info.pool)
+                        reject("Candidate already exists and is registered for the same pool");
+                    } else {
+                        let data = {
+                            _id: new ObjectId(),
+                            id: info.id,
+                            name: info.name,
+                            pools: [info.pool],
+                            recruiters: [],
+                            interviews: {},
+                        }
+
+                        db.get()
+                            .collection(collections.INTERVIEWS)
+                            .insertOne(data)
+                            .then((response) => {
+                                resolve(response);
+                            }).catch((error) => {
+                                reject("Something went wrong!");
+                            })
+                    }
+                }).catch((error) => {
+                    reject(error);
+                })
+        })
+    },
+
+    search: (text, recruiter) => {
+        return new Promise((resolve, reject) => {
+            // console.log(text)
+            try {
+                db.get()
+                    .collection(collections.INTERVIEWS)
+                    .createIndex({ name: "text", id: "text", email: "text" })
+                    .then((response) => {
+                        db.get()
+                            .collection(collections.INTERVIEWS)
+                            .find(
+                                {
+                                    $text: { $search: text },
+                                    pools: { $in: [recruiter.pool] }
+                                }
+                            )
+                            .toArray()
+                            .then((candidates) => {
+                                // console.log(response)
+                                resolve(candidates);
+                            }).catch((error) => {
+                                reject(error);
+                            })
+                    }).catch((error) => {
+                        reject(error);
+                    })
+            } catch {
+                reject("Tiemout");
+            }
+        })
+    },
+
+    get: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get()
+                .collection(collections.CANDIDATES)
+                .findOne(
+                    {
+                        'id': id
+                    },
+                )
+                .then((response) => {
+                    // console.log(response)
+                    resolve(response);
+                }).catch((error) => {
+                    reject(error);
+                })
+        })
+    },
+
+    addFeedback: (id, data, user) => {
+        // console.log(id)
+        // console.log(data)
+        // console.log(user)
+
+        return new Promise((resolve, reject) => {
+            db.get()
+                .collection(collections.INTERVIEWS)
+                .findOne(
+                    {
+                        'id': id
+                    },
+                )
+                .then((candidate) => {
+                    candidate.recruiters.push(user.id);
+                    candidate.interviews[user.id] = {
+                        feedback: data.feedback,
+                        time: new Date(),
+                    }
+
+                    // console.log(candidate);
+
+                    db.get()
+                        .collection(collections.INTERVIEWS)
+                        .updateOne(
+                            {
+                                'id': id
+                            },
+                            {
+                                $set: candidate,
+                            }
+                        )
+                        .then((response) => {
+                            // console.log(response)
+                            resolve(candidate);
+                        }
+                        ).catch((error) => {
+                            reject(error);
+                        })
+                })
+                .catch((error) => {
+                    reject("Something went wrong!");
+                }
+                )
+        })
+    }   
 }
 
 module.exports = {
-    account,
-    admins,
-    message,
-    candidates,
-    registrations
-}
+        account,
+        admins,
+        message,
+        candidates,
+        registrations,
+        interviews
+    }

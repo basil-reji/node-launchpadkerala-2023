@@ -1,0 +1,109 @@
+<section id="admins" class="section mb-4">
+    <div class="container">
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="card p-4 forms">
+                    {{#if message}}<p class="error" style="font-weight: 700;">{{message}}</p>{{/if}}
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate Details</h5>
+
+                        <table class="table table-hover">
+                            {{#with candidate}}
+                            <tbody>
+                                <tr>
+                                    <th>Launchpad ID</th>
+                                    <th>{{id}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Rank:</th>
+                                    <th>{{rank}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Name:</th>
+                                    <th>{{name}}</th>
+                                </tr>
+                                <tr>
+                                    <th>College/Institution</th>
+                                    <th>{{college}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>{{degree}}</th>
+                                </tr>
+                                <tr>
+                                    <td>Branch</td>
+                                    <td>{{accademic.branch}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Year of Graduation</td>
+                                    <td>{{year_of_graduation}}</td>
+                                </tr>
+                                <tr>
+                                    <td>CGPA</td>
+                                    <td>{{accademic.cgpa}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Backlogs</td>
+                                    <td>{{accademic.total_backlogs}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Backlogs</td>
+                                    <td>{{accademic.active_backlogs}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Test Score</th>
+                                    <th>{{test_results.analytical}}</th>
+                                </tr>
+                                <tr>
+                                    <td>Active Backlogs</td>
+                                    <td>{{accademic.active_backlogs}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Backlogs</td>
+                                    <td>{{accademic.active_backlogs}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Backlogs</td>
+                                    <td>{{accademic.active_backlogs}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Backlogs</td>
+                                    <td>{{accademic.active_backlogs}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        {{/with}}
+                        {{#with }}
+                        <form class="form p-0 mb-4" action="/admin/interviews/add/{{id}}" method="post" role="form">
+                            <div class="row p-0 justify-content-center align-items-center">
+                                <input type="hidden" id="h_lpk_id" name="lpk_id" value="{{id}}">
+                                <div class="col-12 my-2">
+                                    <h5 style="font-weight: 700;">Feedback About the </h5>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="feedback">Feedback:</label>
+                                        <textarea name="feedback" id="feedbacks" class="form-control" cols="30" rows="10"
+                                            placeholder="Feed Back about {{name}}"></textarea>
+                                    </div>
+                                </div>
+
+
+                                <div class="row justify-content-center col-12">
+                                    <div class="form-group text-center mt-4 col-12 col-md-6">
+                                        <a href="/admin/interviews/new" class="btn btn">Cancel</a>
+                                    </div>
+                                    <div class="form-group text-center mt-4 col-12 col-md-6">
+                                        <button type="submit" class="btn-primary">Complete Interview</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        {{/with}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,8 +1,8 @@
-<section id="admins" class="section">
+<section id="admins" class="section mb-4">
     <div class="container">
         <div class="row g-4 justify-content-center align-items-center">
             <div class="col-12 col-md-10 col-lg-8">
-                <div class="card">
+                <div class="card row">
                     <div class="card-body">
                         <h5 class="card-title">Candidate Details</h5>
 
@@ -15,6 +15,14 @@
                                 <tr>
                                     <th>Rank</th>
                                     <th>{{candidate.rank}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Aadhar ID</th>
+                                    <th>{{candidate.other_id.aadhar}}</th>
+                                </tr>
+                                <tr>
+                                    <th>KKEM ID</th>
+                                    <th>{{candidate.other_id.kkem}}</th>
                                 </tr>
                                 <tr>
                                     <th>Name:</th>
@@ -56,21 +64,19 @@
                                     <td>Active Backlogs</td>
                                     <td>{{candidate.accademic.active_backlogs}}</td>
                                 </tr>
-                                <tr>
-                                    <td>Other Available Emails</td>
-                                    <td>
-                                        {{candidate.other_email.original}} <br>
-                                        {{candidate.other_email.corrected}} <br>
-                                        {{candidate.other_email.hackerearth}}
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-footer row justify-content-center align-items-center">
+                        <div class="form-group text-center col-12">
+                            <a href="/admin/candidates/edit/{{candidate.id}}" class="btn">Edit Candidate</a>
+                        </div>
+                        <div class="form-group text-center col-12">
+                            <a href="/admin/candidates" class="btn">Cancel</a>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div class="col-12 d-flex justify-content-center align-items-center">
-                <a href="/admin/candidates" class="btn">Go Back</a>
             </div>
         </div>
     </div>

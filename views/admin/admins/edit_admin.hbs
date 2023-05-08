@@ -24,6 +24,24 @@
                             <option value="admin" {{#if (compare admin.role "admin" )}}selected{{/if}}>Admin</option>
                             <option value="super_admin" {{#if (compare admin.role "super_admin" )}}selected{{/if}}>Super
                                 Admin</option>
+                            <option value="registration_volunteer" {{#if (compare admin.role "registration_volunteer" )}}selected{{/if}}>Registration Volunteer</option>
+                            <option value="recruiter" {{#if (compare admin.role "recruiter" )}}selected{{/if}}>Recruiter</option>
+                        </select>
+                    </div>
+                    {{#if admin.recruiter_id}}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="cid" id="cid" placeholder="Custome ID"
+                            value="{{admin.recruiter_id}}">
+                    </div>
+                    {{/if}}
+                    <div class="form-group">
+                        <select name="status" id="status" class="form-control form-select" id="status" required>
+                            <option value="active" {{#if (compare admin.status "active" )}}selected{{/if}}>Active
+                            </option>
+                            <option value="disabled" {{#if (compare admin.status "disabled" )}}selected{{/if}}>Disabled
+                            </option>
+                            <option value="inactive" {{#if (compare admin.status "inactive" )}}selected{{/if}}>Inactive
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">

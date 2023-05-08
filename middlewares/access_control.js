@@ -4,13 +4,17 @@ const access_controll = (asset, permission) => {
         let user = req.user;
 
         if (user) {
-            if (user.permissions['all']) {
-                next()
-            } else if (user.permissions[asset]['all']) {
-                next()
-            } else if (user.permissions[asset][permission]) {
-                next()
-            } else {
+            try {
+                if (user.permissions[asset][permission]) {
+                    next()
+                } else if (user.permissions[asset]['all']) {
+                    next()
+                } else if (user.permissions['all']) {
+                    next()
+                } else {
+                    res.redirect('/')
+                }
+            } catch (error) {
                 res.redirect('/')
             }
         } else {

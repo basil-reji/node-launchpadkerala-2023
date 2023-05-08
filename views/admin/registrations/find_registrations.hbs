@@ -1,0 +1,28 @@
+<section id="candidates" class="section">
+    <div class="container">
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <div class="forms">
+                    <div class="log_head">
+                        <h3>Find Registered candidates</h3>
+                    </div>
+                    {{#if message}}<p class="error">{{message}}</p>{{/if}}
+                    <form action="/admin/registrations/search" method="post" role="form" class="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="text" id="text"
+                                placeholder="Launchpad ID or Email or Name">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-primary">Search Registered Canidates</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <a href="/admin/registrations/" class="btn">Go Back</a>
+            </div>
+        </div>
+    </div>
+</section>

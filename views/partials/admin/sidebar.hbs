@@ -8,53 +8,70 @@
     <div id="scont">
         <ul>
             <li>
-                <a href="/admin/" {{#if dashboard_page}}class="active"{{/if}}>
+                <a href="/admin/" {{#if dashboard_page}}class="active" {{/if}}>
                     <i class="ri-dashboard-{{#if dashboard_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Dashboard</h5>
                 </a>
             </li>
             {{#if user.permissions.registrations.all}}
             <li>
-                <a href="/admin/registrations/" {{#if registrations_page}}class="active"{{/if}}>
+                <a href="/admin/registrations/" {{#if registrations_page}}class="active" {{/if}}>
                     <i class="ri-edit-box-{{#if registrations_page}}fill{{else}}line{{/if}} sico"></i>
-                    <h5>Interviews</h5>
+                    <h5>Registration</h5>
                 </a>
             </li>
             {{else if user.permissions.registrations.view}}
             <li>
-                <a href="/admin/registrations/" {{#if registrations_page}}class="active"{{/if}}>
+                <a href="/admin/registrations/" {{#if registrations_page}}class="active" {{/if}}>
                     <i class="ri-edit-box-{{#if registrations_page}}fill{{else}}line{{/if}} sico"></i>
-                    <h5>Interviews</h5>
+                    <h5>Registration</h5>
+                </a>
+            </li>
+            {{else}}
+            {{/if}}
+
+            {{#if user.permissions.interviews.all}}
+            <li>
+                <a href="/admin/interviews/new" {{#if new_interviews_page}}class="active" {{/if}}>
+                    <i class="ri-account-pin-circle-{{#if new_interviews_page}}fill{{else}}line{{/if}} sico"></i>
+                    <h5>New Interviews</h5>
+                </a>
+            </li>
+            {{else if user.permissions.interviews.view}}
+            <li>
+                <a href="/admin/interviews/new" {{#if new_interviews_page}}class="active" {{/if}}>
+                    <i class="ri-account-pin-circle-{{#if new_interviews_page}}fill{{else}}line{{/if}} sico"></i>
+                    <h5>New Interviews</h5>
                 </a>
             </li>
             {{else}}
             {{/if}}
             {{#if user.permissions.interviews.all}}
             <li>
-                <a href="/admin/interviews/" {{#if interviews_page}}class="active"{{/if}}>
+                <a href="/admin/interviews/" {{#if interviews_page}}class="active" {{/if}}>
                     <i class="ri-team-{{#if interviews_page}}fill{{else}}line{{/if}} sico"></i>
-                    <h5>Interviews</h5>
+                    <h5>All Interviews</h5>
                 </a>
             </li>
             {{else if user.permissions.interviews.view}}
             <li>
-                <a href="/admin/interviews/" {{#if interviews_page}}class="active"{{/if}}>
+                <a href="/admin/interviews/" {{#if interviews_page}}class="active" {{/if}}>
                     <i class="ri-team-{{#if interviews_page}}fill{{else}}line{{/if}} sico"></i>
-                    <h5>Interviews</h5>
+                    <h5>All Interviews</h5>
                 </a>
             </li>
             {{else}}
             {{/if}}
             {{#if user.permissions.messages.all}}
             <li>
-                <a href="/admin/messages/" {{#if messages_page}}class="active"{{/if}}>
+                <a href="/admin/messages/" {{#if messages_page}}class="active" {{/if}}>
                     <i class="ri-message-3-{{#if messages_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Message</h5>
                 </a>
             </li>
             {{else if user.permissions.messages.view}}
             <li>
-                <a href="/admin/messages/" {{#if messages_page}}class="active"{{/if}}>
+                <a href="/admin/messages/" {{#if messages_page}}class="active" {{/if}}>
                     <i class="ri-message-3-{{#if messages_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Message</h5>
                 </a>
@@ -64,14 +81,14 @@
 
             {{#if user.permissions.candidates.all}}
             <li>
-                <a href="/admin/candidates/" {{#if candidates_page}}class="active"{{/if}}>
+                <a href="/admin/candidates/" {{#if candidates_page}}class="active" {{/if}}>
                     <i class="ri-contacts-book-2-{{#if candidates_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Canidates</h5>
                 </a>
             </li>
             {{else if user.permissions.candidates.view}}
             <li>
-                <a href="/admin/candidates/" {{#if candidates_page}}class="active"{{/if}}>
+                <a href="/admin/candidates/" {{#if candidates_page}}class="active" {{/if}}>
                     <i class="ri-contacts-book-2-{{#if candidates_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Canidates</h5>
                 </a>
@@ -81,14 +98,14 @@
 
             {{#if user.permissions.admins.all}}
             <li>
-                <a href="/admin/admins/" {{#if admins_page}}class="active"{{/if}}>
+                <a href="/admin/admins/" {{#if admins_page}}class="active" {{/if}}>
                     <i class="ri-shield-user-{{#if admins_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Admins</h5>
                 </a>
             </li>
             {{else if user.permissions.admins.view}}
             <li>
-                <a href="/admin/admins/" {{#if admins_page}}class="active"{{/if}}>
+                <a href="/admin/admins/" {{#if admins_page}}class="active" {{/if}}>
                     <i class="ri-shield-user-{{#if admins_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>Admins</h5>
                 </a>
@@ -97,7 +114,7 @@
             {{/if}}
 
             <li>
-                <a href="/admin/account/" {{#if account_page}}class="active"{{/if}}>
+                <a href="/admin/account/" {{#if account_page}}class="active" {{/if}}>
                     <i class="ri-user-3-{{#if admin_page}}fill{{else}}line{{/if}} sico"></i>
                     <h5>My Account</h5>
                 </a>
@@ -105,6 +122,7 @@
         </ul>
     </div>
     <div id="sfoot">
-        Made by &nbsp<a href="http://github.com/basil-reji" target="_blank" rel="noopener noreferrer"><strong>BR</strong></a>
+        Made by &nbsp<a href="http://github.com/basil-reji" target="_blank"
+            rel="noopener noreferrer"><strong>BR</strong></a>
     </div>
 </aside>

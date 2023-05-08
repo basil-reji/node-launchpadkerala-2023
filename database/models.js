@@ -6,6 +6,7 @@ const user = {
         phone: null,
         password: null,
         role: 'user',
+        status: 'active',
         profile: {
             image: '/assets/images/user/user.png',
             primary_address: {}
@@ -25,6 +26,78 @@ const user = {
         }
     },
 
+    recruiter: {
+        id: '',
+        pool: '',
+        interviews: [],
+        fname: '',
+        sname: '',
+        email: '',
+        phone: null,
+        password: null,
+        role: 'recruiter',
+        status: 'active',
+        profile: {
+            image: '/assets/images/user/user.png',
+            primary_address: {}
+        },
+        permissions: {
+            restricted: false,
+            admin: true,
+            recuruiter: true,
+            self: {
+                all: true,
+            },
+            interviews: {
+                view: true,
+                update: true,
+                edit: true,
+            },
+        },
+        events: {
+            joined: '',
+            general: []
+        },
+        flags: {
+            profile_completed: false,
+        }
+    },
+
+    reg_volunteer: {
+        fname: '',
+        sname: '',
+        email: '',
+        phone: null,
+        password: null,
+        role: 'registration_volunteer',
+        status: 'active',
+        profile: {
+            image: '/assets/images/user/user.png',
+            primary_address: {}
+        },
+        permissions: {
+            restricted: false,
+            admin: true,
+            volunteer: true,
+            self: {
+                all: true,
+            },
+            registrations: {
+                view: true,
+                add: true,
+                edit: true,
+                update: true,
+            },
+        },
+        events: {
+            joined: '',
+            general: []
+        },
+        flags: {
+            profile_completed: false,
+        }
+    },
+
     admin: {
         fname: '',
         sname: '',
@@ -32,6 +105,7 @@ const user = {
         phone: null,
         password: null,
         role: 'admin',
+        status: 'active',
         profile: {
             image: '/assets/images/user/user.png',
             primary_address: {}
@@ -100,6 +174,7 @@ const user = {
         phone: null,
         password: null,
         role: 'super_admin',
+        status: 'active',
         profile: {
             image: '/assets/images/user/user.png',
             primary_address: {}

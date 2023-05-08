@@ -13,6 +13,7 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -22,6 +23,7 @@
                                     <th scope="row">{{add @index 1}}</th>
                                     <td>{{this.fname}} {{this.sname}}</td>
                                     <td>{{this.email}}</td>
+                                    <td>{{this.status}}</td>
                                     <td>{{this.role}}</td>
                                     <td>
                                         <button class="btn-ico red" onclick="removeAdmin(`{{this._id}}`)">

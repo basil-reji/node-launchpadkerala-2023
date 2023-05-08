@@ -14,24 +14,31 @@
                     {{#with candidate}}
                     <form class="form" action="/admin/registrations/candidates/update/{{id}}" method="post" role="form">
                         <div class="row justify-content-center align-items-center">
-                            <div class="col-12 col-md-6 col-lg-4">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="lpk_id">Launchpad Kerala ID:</label>
                                     <input type="text" class="form-control" name="lpk_id" id="lpk_id"
                                         placeholder="{{id}}" value="{{id}}" required disabled>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="name">Rank:</label>
                                     <input type="text" class="form-control" name="rank" id="rank" placeholder="{{rank}}"
                                         value="{{rank}}" required disabled>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Aadhar ID:</label>
+                                    <input type="number" class="form-control" name="aadhar_id" id="aadhar_id"
+                                        placeholder="{{other_id.aadhar}}" value="{{other_id.aadhar}}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="name">KKEM ID:</label>
-                                    <input type="text" class="form-control" name="kkem_id" id="kkem_id"
+                                    <input type="number" class="form-control" name="kkem_id" id="kkem_id"
                                         placeholder="{{other_id.kkem}}" value="{{other_id.kkem}}">
                                 </div>
                             </div>
