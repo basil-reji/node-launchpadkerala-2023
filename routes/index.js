@@ -338,4 +338,53 @@ router.get('/recruiters/pool/:pool', function (req, res, next) {
         })
 });
 
+router.get('/registration', function (req, res, next) {
+    let message = req.flash('message');
+    res.render('pages/registration/register',
+        {
+            title: `Registration | ${app_name}`,
+            page_head: 'Registration',
+            page_nav_name: 'Registration',
+            registration_page: true,
+            message
+        });
+});
+
+router.post('/allotment/view', function (req, res, next) {
+    controller.candidate.viewCandidate(req.body)
+        .then((candidate) => {
+            if (candidate.allotment.allotted) {
+                req.session.candidate = null;
+                res.render('pages/allotment/success',
+                    {
+                        title: `Allotment Application | ${app_name}`,
+                        page_head: 'Allotment',
+                        page_nav_name: 'Allotment',
+                        allotment_page: true,
+                        success_message: 'You have been alloted a pool.',
+                        candidate
+                    });
+            } else if (candidate.allotment.waitlisted) {
+                req.session.candidate = null;
+                res.render('pages/allotment/success',
+                    {
+                        title: `Allotment Application | ${app_name}`,
+                        page_head: 'Allotment',
+                        page_nav_name: 'Allotment',
+                        allotment_page: true,
+                        failure_message: 'Sorry to inorm you that you are waitlisted for allotment.',
+                        candidate
+                    });
+            } else {
+                req.flash('message', "");
+                res.redirect('/allotment/view');
+            }
+        })
+        .catch((error) => {
+            req.flash('message', error);
+            res.redirect('/allotment/view');
+        })
+});
+
+
 module.exports = router;

@@ -107,7 +107,7 @@ const admins = {
                 user = models.user.recruiter;
                 user.id = inf.cid;
                 user.pool = inf.pool;
-            } else if (info.role == 'registration_volunteer') {
+            } else if (inf.role == 'registration_volunteer') {
                 user = models.user.reg_volunteer;
             } else {
                 user = models.user.user;
@@ -514,8 +514,6 @@ const registrations = {
     add: (id, data, admin) => {
         return new Promise((resolve, reject) => {
             // console.log(data)
-            // console.log(id)
-            // console.log(id.length)
             db.get()
                 .collection(collections.CANDIDATES)
                 .findOne(
@@ -631,9 +629,27 @@ const interviews = {
                 .then((candidate) => {
                     // console.log(info)
                     if (candidate) {
-                        candidate.pools.includes(info.pool)
-                        reject("Candidate already exists and is registered for the same pool");
+                        if (candidate.pools.includes(info.pool)) {
+                            resolve(candidate);
+                        } else {
+                            db.get()
+                                .collection(collections.INTERVIEWS)
+                                .updateOne(
+                                    {
+                                        'id': info.id
+                                    },
+                                    {
+                                        $push: {
+                                            pools: info.pool
+                                        }
+                                    }
+                                ).then((response) => {
+                                    candidate.pools.push(info.pool);
+                                    resolve(candidate);
+                                })
+                        }
                     } else {
+                        // console.log(info)
                         let data = {
                             _id: new ObjectId(),
                             id: info.id,
@@ -676,7 +692,6 @@ const interviews = {
                             )
                             .toArray()
                             .then((candidates) => {
-                                // console.log(response)
                                 resolve(candidates);
                             }).catch((error) => {
                                 reject(error);
@@ -708,10 +723,7 @@ const interviews = {
         })
     },
 
-    addFeedback: (id, data, user) => {
-        // console.log(id)
-        // console.log(data)
-        // console.log(user)
+    completeInterview: (id, data, user) => {
 
         return new Promise((resolve, reject) => {
             db.get()
@@ -722,45 +734,66 @@ const interviews = {
                     },
                 )
                 .then((candidate) => {
-                    candidate.recruiters.push(user.id);
-                    candidate.interviews[user.id] = {
-                        feedback: data.feedback,
-                        time: new Date(),
-                    }
-
-                    // console.log(candidate);
-
-                    db.get()
-                        .collection(collections.INTERVIEWS)
-                        .updateOne(
-                            {
-                                'id': id
-                            },
-                            {
-                                $set: candidate,
-                            }
-                        )
-                        .then((response) => {
-                            // console.log(response)
-                            resolve(candidate);
+                    if (candidate) {
+                        candidate.recruiters.push(user.id);
+                        candidate.interviews[user.id] = {
+                            feedback: data.feedback,
+                            time: new Date(),
                         }
-                        ).catch((error) => {
-                            reject(error);
-                        })
+
+                        db.get()
+                            .collection(collections.INTERVIEWS)
+                            .updateOne(
+                                {
+                                    'id': id
+                                },
+                                {
+                                    $set: candidate,
+                                }
+                            )
+                            .then((response) => {
+                                // console.log(response)
+                                resolve(candidate);
+                            })
+                    } else {
+                        let info = {
+                            _id: new ObjectId(),
+                            id: id,
+                            name: id,
+                            pools: [user.pool],
+                            recruiters: [user.id],
+                            interviews: {
+                                [user.id]: {
+                                    feedback: data.feedback,
+                                    time: new Date(),
+                                },
+                            }
+                        }
+
+                        db.get()
+                            .collection(collections.INTERVIEWS)
+                            .insertOne(info)
+                            .then((response) => {
+                                resolve(info);
+                            })
+                            .then((error) => {
+                                reject("Something went wrong!, Please call the volunteer");
+                            })
+                    }
                 })
                 .catch((error) => {
+                    console.log("Ividennu potti too")
                     reject("Something went wrong!");
-                }
-                )
+                })
         })
-    }   
+    }
 }
 
 module.exports = {
-        account,
-        admins,
-        message,
-        candidates,
-        registrations,
-        interviews
-    }
+    account,
+    admins,
+    message,
+    candidates,
+    registrations,
+    interviews
+}

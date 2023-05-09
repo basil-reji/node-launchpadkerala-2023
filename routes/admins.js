@@ -609,7 +609,8 @@ router.post('/registrations/add/:id', access_controll('registrations', 'add'), f
             .then((candidate) => {
                 // console.log(candidate);
                 admin.interviews.add(candidate)
-                    .then((response) => {
+                    .then((info) => {
+                        candidate.pools = info.pools
                         res.render('admin/registrations/confirmation', {
                             title: app_name,
                             page_title: 'Registrations',
@@ -629,14 +630,14 @@ router.post('/registrations/add/:id', access_controll('registrations', 'add'), f
                             candidate
                         });
                     }).catch((error) => {
-                        // console.log(error)
-                        req.flash('message', error);
+                        console.log(error)
+                        req.flash('message', "Invalid Request, Try again");
                         res.redirect('/admin/registrations/add/' + req.params.id);
                     })
             })
             .catch((error) => {
-                // console.log("Error")
-                req.flash('message', error);
+                // console.log("Error")                
+                req.flash('message', "Invalid Request, Try again");
                 res.redirect('/admin/registrations/add/' + req.params.id);
             })
     } else {
@@ -688,7 +689,7 @@ router.post('/interviews/candidates/search', access_controll('interviews', 'view
                 req.flash('message', 'No Candidates Found');
                 res.redirect('/admin/interviews/new');
             } else if (candidates.length == 1) {
-                console.log(candidates[0].id)
+                // console.log(candidates[0].id)
                 res.redirect('/admin/interviews/' + candidates[0].id);
             } else {
                 res.render('admin/interviews/view', {
@@ -716,40 +717,41 @@ router.get('/interviews/:id', access_controll('interviews', 'view'), function (r
     admin.interviews.get(req.params.id)
         .then((candidate) => {
             // console.log(response);
-            res.render('admin/interviews/view_one', {
-                title: app_name,
-                page_title: 'Interviews',
-                breadcrumbs: [
-                    {
-                        page_name: 'Interviews',
-                        page_link: '/interviews'
-                    },
-                    {
-                        page_name: 'View Candidate',
-                        active: true,
-                    }
-                ],
-                new_interviews_page: true,
-                user,
-                candidate,
-                message,
-                success
-            });
+            if (candidate) {
+                res.render('admin/interviews/view_one', {
+                    title: app_name,
+                    page_title: 'Interviews',
+                    breadcrumbs: [
+                        {
+                            page_name: 'Interviews',
+                            page_link: '/interviews'
+                        },
+                        {
+                            page_name: 'View Candidate',
+                            active: true,
+                        }
+                    ],
+                    new_interviews_page: true,
+                    user,
+                    candidate,
+                    message,
+                    success
+                });
+            } else {
+                req.flash('message', 'No Candidates Found');
+                res.redirect('/admin/interviews/new');
+            }
         })
 });
 
-router.post('/interviews/candidates/search', access_controll('interviews', 'view'), function (req, res, next) {
+router.post('/interviews/add/:id', access_controll('interviews', 'update'), function (req, res, next) {
     let user = req.user
-    admin.interviews.search(req.body.text, user)
-        .then((candidates) => {
-            if (candidates.length == 0) {
-                req.flash('message', 'No Candidates Found');
-                res.redirect('/admin/interviews/new');
-            } else if (candidates.length == 1) {
-                console.log(candidates[0].id)
-                res.redirect('/admin/interviews/' + candidates[0].id);
-            } else {
-                res.render('admin/interviews/view', {
+    let time = new Date()
+    // console.log(req.params.id)
+    if (req.params.id == req.body.lpk_id) {
+        admin.interviews.completeInterview(req.params.id, req.body, user)
+            .then((candidate) => {
+                res.render('admin/interviews/confirmation', {
                     title: app_name,
                     page_title: 'Interviews',
                     breadcrumbs: [
@@ -759,38 +761,13 @@ router.post('/interviews/candidates/search', access_controll('interviews', 'view
                         }
                     ],
                     new_interviews_page: true,
-                    candidates,
+                    candidate,
                     user,
-
+                    time
                 });
-            }
-        });
-});
-
-router.post('/interviews/add/:id', access_controll('interviews', 'update'), function (req, res, next) {
-    let user = req.user
-    let time = new Date()
-    // console.log(req.params.id)
-    if(req.params.id==req.body.lpk_id){
-        admin.interviews.addFeedback(req.params.id, req.body, user)
-        .then((candidate) => {
-            res.render('admin/interviews/confirmation', {
-                title: app_name,
-                page_title: 'Interviews',
-                breadcrumbs: [
-                    {
-                        page_name: 'Interviews',
-                        active: true,
-                    }
-                ],
-                new_interviews_page: true,
-                candidate,
-                user,
-                time
-            });
-        })
-    }else{
-        req.flash('message', 'Invalid Request, Try again');
+            })
+    } else {
+        req.flash('message', 'Something Went Wrong!, Try again');
         res.redirect('/admin/interviews/' + req.params.id);
     }
 });

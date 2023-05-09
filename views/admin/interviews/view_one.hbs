@@ -52,28 +52,52 @@
                                 </tr>
                                 <tr>
                                     <th>Total Test Score</th>
-                                    <th>{{test_results.analytical}}</th>
+                                    <th>{{test_results.total_score}}</th>
                                 </tr>
                                 <tr>
-                                    <td>Active Backlogs</td>
-                                    <td>{{accademic.active_backlogs}}</td>
+                                    <td>Analytical Score</td>
+                                    <td>{{test_results.analytical.score}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Active Backlogs</td>
-                                    <td>{{accademic.active_backlogs}}</td>
+                                    <td>Programming Scores</td>
+                                    <td>{{test_results.programming.score}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Active Backlogs</td>
-                                    <td>{{accademic.active_backlogs}}</td>
+                                    <td>Prefered Job Type</td>
+                                    <td>{{job_type}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Active Backlogs</td>
-                                    <td>{{accademic.active_backlogs}}</td>
+                                    <td>Language Skills</td>
+                                    <td>{{skills.languages}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tech Skills</td>
+                                    <td>{{skills.technical}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Professional Skills</td>
+                                    <td>{{skills.profeccional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Additional Skills</td>
+                                    <td>{{skills.additional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Certifications</td>
+                                    <td>{{certifications}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Karma Points</td>
+                                    <td>{{other_details.karma_points}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Resume</td>
+                                    <td><a target="_blank" href="{{resume}}">View Resume</a></td>
                                 </tr>
                             </tbody>
                         </table>
                         {{/with}}
-                        {{#with }}
+                        {{#with candidate}}
                         <form class="form p-0 mb-4" action="/admin/interviews/add/{{id}}" method="post" role="form">
                             <div class="row p-0 justify-content-center align-items-center">
                                 <input type="hidden" id="h_lpk_id" name="lpk_id" value="{{id}}">
