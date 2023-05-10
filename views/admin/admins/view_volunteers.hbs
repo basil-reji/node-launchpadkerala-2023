@@ -1,0 +1,55 @@
+<section id="admins" class="section mb-4">
+    <div class="container">
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-12 col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Volunteers</h5>
+
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each admins}}
+                                <tr id="row-{{this._id}}">
+                                    <th scope="row">{{add @index 1}}</th>
+                                    <td>{{this.fname}} {{this.sname}}</td>
+                                    <td>{{this.email}}</td>
+                                    <td>{{this.status}}</td>
+                                    <td>{{this.role}}</td>
+                                    <td>
+                                        <button class="btn-ico red" onclick="removeAdmin(`{{this._id}}`)">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </button>
+                                        <a href="/admin/admins/volunteers/edit/{{this._id}}" class="btn-ico blue">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4 justify-content-center align-items-center">
+            {{#ifor user.permissions.admins.all user.permissions.admins.add}}
+            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center align-items-center">
+                <a href="/admin/admins/volunteers/add" class="btn">Add Admin</a>
+            </div>
+            {{/ifor}}
+            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center align-items-center">
+                <a href="/admin/admins" class="btn">Cancel</a>
+            </div>
+        </div>
+    </div>
+</section>

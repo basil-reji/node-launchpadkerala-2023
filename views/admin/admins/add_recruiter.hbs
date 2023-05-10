@@ -3,10 +3,10 @@
         <div class="col-12 col-sm-8 col-md-6 col-lg-4">
             <div class="forms">
                 <div class="log_head">
-                    <h3>Add Admin</h3>
+                    <h3>Add Recruiter</h3>
                 </div>
                 {{#if message}}<p class="error">{{message}}</p>{{/if}}
-                <form action="/admin/admins/admins/add" method="post" role="form" class="log-form">
+                <form action="/admin/admins/recruiters/add" method="post" role="form" class="log-form">
                     <div class="form-group">
                         <input type="text" class="form-control" name="fname" id="fname" placeholder="First Name"
                             required>
@@ -19,9 +19,14 @@
                     </div>
                     <div class="form-group">
                         <select name="role" id="role" class="form-control form-select" id="role" required>
-                            <option value="admin" selected>Admin</option>
-                            <option value="super_admin">Super Admin</option>
+                            <option value="recruiter" selected>Recruiter</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="cid" id="cid" placeholder="Custome ID" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="pool" id="pool" placeholder="Pool" required>
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control" name="password" id="password" placeholder="Password"
@@ -33,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn-primary">Add Admin</button>
-                        <a href="/admin/admins/admins" class="btn">Cancel</a>
+                        <a href="/admin/admins/recruiters" class="btn">Cancel</a>
                     </div>
                 </form>
             </div>

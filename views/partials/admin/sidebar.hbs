@@ -30,14 +30,7 @@
             {{else}}
             {{/if}}
 
-            {{#if user.permissions.interviews.all}}
-            <li>
-                <a href="/admin/interviews/new" {{#if new_interviews_page}}class="active" {{/if}}>
-                    <i class="ri-account-pin-circle-{{#if new_interviews_page}}fill{{else}}line{{/if}} sico"></i>
-                    <h5>New Interviews</h5>
-                </a>
-            </li>
-            {{else if user.permissions.interviews.view}}
+            {{#if user.permissions.recuruiter}}
             <li>
                 <a href="/admin/interviews/new" {{#if new_interviews_page}}class="active" {{/if}}>
                     <i class="ri-account-pin-circle-{{#if new_interviews_page}}fill{{else}}line{{/if}} sico"></i>
@@ -46,14 +39,7 @@
             </li>
             {{else}}
             {{/if}}
-            {{#if user.permissions.interviews.all}}
-            <li>
-                <a href="/admin/interviews/" {{#if interviews_page}}class="active" {{/if}}>
-                    <i class="ri-team-{{#if interviews_page}}fill{{else}}line{{/if}} sico"></i>
-                    <h5>All Interviews</h5>
-                </a>
-            </li>
-            {{else if user.permissions.interviews.view}}
+            {{#if user.permissions.recuruiter}}
             <li>
                 <a href="/admin/interviews/" {{#if interviews_page}}class="active" {{/if}}>
                     <i class="ri-team-{{#if interviews_page}}fill{{else}}line{{/if}} sico"></i>

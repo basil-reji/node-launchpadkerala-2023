@@ -39,15 +39,44 @@ const account = {
 }
 
 const admins = {
+    
+    // 'role': {
+    //     '$in': ['admin', 'super_admin', 'recruiter', 'registration_volunteer']
+    // }
 
     getAll: () => {
         return new Promise((resolve, reject) => {
             db.get()
                 .collection(collections.USER)
                 .find(
+                    {},
+                    {
+                        projection: {
+                            password: 0,
+                            permission: 0,
+                            events: 0,
+                            flags: 0
+                        }
+                    }
+                )
+                .toArray()
+                .then((response) => {
+                    // console.log(response)
+                    resolve(response);
+                }).catch((error) => {
+                    reject(error);
+                })
+        })
+    },
+
+    getAdmins: (types) => {
+        return new Promise((resolve, reject) => {
+            db.get()
+                .collection(collections.USER)
+                .find(
                     {
                         'role': {
-                            '$in': ['admin', 'super_admin', 'recruiter', 'registration_volunteer']
+                            '$in': types
                         }
                     },
                     {
@@ -212,7 +241,7 @@ const message = {
                 .find()
                 .toArray()
                 .then((response) => {
-                    resolve(response);
+                    resolve(response.reverse());
                 }).catch((error) => {
                     reject(error);
                 })

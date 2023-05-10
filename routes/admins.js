@@ -59,10 +59,28 @@ router.post('/messages/delete', access_controll('messages', 'delete'), function 
 
 router.get('/admins', access_controll('admins', 'view'), function (req, res, next) {
     let user = req.user
-    admin.admins.getAll()
+    res.render('admin/admins', {
+        title: app_name,
+        page_title: 'Admins',
+        breadcrumbs: [
+            {
+                page_name: 'Admins',
+                active: true,
+            }
+        ],
+        admins_page: true,
+        user
+    });
+});
+
+//admins
+
+router.get('/admins/admins', access_controll('admins', 'view'), function (req, res, next) {
+    let user = req.user
+    admin.admins.getAdmins(['super_admin', 'admin'])
         .then((admins) => {
             // console.log(response);
-            res.render('admin/admins', {
+            res.render('admin/admins/view_admins', {
                 title: app_name,
                 page_title: 'Admins',
                 breadcrumbs: [
@@ -72,10 +90,175 @@ router.get('/admins', access_controll('admins', 'view'), function (req, res, nex
                     }
                 ],
                 admins_page: true,
+                admin_type: 'admins',
                 user,
-                admins
+                admins,
             });
         })
+});
+
+router.get('/admins/recruiters', access_controll('admins', 'view'), function (req, res, next) {
+    let user = req.user
+    admin.admins.getAdmins(['recruiter'])
+        .then((admins) => {
+            // console.log(response);
+            res.render('admin/admins/view_recruiters', {
+                title: app_name,
+                page_title: 'Admins',
+                breadcrumbs: [
+                    {
+                        page_name: 'Admins',
+                        active: true,
+                    }
+                ],
+                admins_page: true,
+                admin_type: 'recruiters',
+                user,
+                admins,
+            });
+        })
+});
+
+router.get('/admins/volunteers', access_controll('admins', 'view'), function (req, res, next) {
+    let user = req.user
+    admin.admins.getAdmins(['registration_volunteer'])
+        .then((admins) => {
+            // console.log(response);
+            res.render('admin/admins/view_volunteers', {
+                title: app_name,
+                page_title: 'Admins',
+                breadcrumbs: [
+                    {
+                        page_name: 'Admins',
+                        active: true,
+                    }
+                ],
+                admins_page: true,
+                admin_type: 'volunteers',
+                user,
+                admins,
+            });
+        })
+});
+
+router.get('/admins/admins/add', access_controll('admins', 'add'), function (req, res, next) {
+    let user = req.user;
+    let message = req.flash('message');
+    res.render('admin/admins/add_admin', {
+        title: app_name,
+        page_title: 'Admins',
+        breadcrumbs: [
+            {
+                page_name: 'Admins',
+                page_link: '/admins'
+            },
+            {
+                page_name: 'Add Admin',
+                active: true,
+            }
+        ],
+        admins_page: true,
+        user,
+        message
+    });
+});
+
+router.post('/admins/admins/add', access_controll('admins', 'add'), function (req, res, next) {
+    let user = req.body
+
+    authenticate.check_user_exist(user.email).then((response) => {
+        if (user.password == user.cpassword) {
+            admin.admins.add(user).then((response) => {
+                res.redirect('/admin/admins/admins')
+            })
+        } else {
+            req.flash('message', `Password not match`);
+            res.redirect('/admin/admins/admins/add');
+        }
+    }).catch((error) => {
+        req.flash('message', `${error}`);
+        res.redirect('/admin/admins/admins/add');
+    })
+});
+
+router.get('/admins/volunteers/add', access_controll('admins', 'add'), function (req, res, next) {
+    let user = req.user;
+    let message = req.flash('message');
+    res.render('admin/admins/add_volunteer', {
+        title: app_name,
+        page_title: 'Admins',
+        breadcrumbs: [
+            {
+                page_name: 'Admins',
+                page_link: '/admins'
+            },
+            {
+                page_name: 'Add Admin',
+                active: true,
+            }
+        ],
+        admins_page: true,
+        user,
+        message
+    });
+});
+
+router.post('/admins/volunteers/add', access_controll('admins', 'add'), function (req, res, next) {
+    let user = req.body
+
+    authenticate.check_user_exist(user.email).then((response) => {
+        if (user.password == user.cpassword) {
+            admin.admins.add(user).then((response) => {
+                res.redirect('/admin/admins/volunteers')
+            })
+        } else {
+            req.flash('message', `Password not match`);
+            res.redirect('/admin/admins/volunteers/add');
+        }
+    }).catch((error) => {
+        req.flash('message', `${error}`);
+        res.redirect('/admin/admins/volunteers/add');
+    })
+});
+
+router.get('/admins/recruiters/add', access_controll('admins', 'add'), function (req, res, next) {
+    let user = req.user;
+    let message = req.flash('message');
+    res.render('admin/admins/add_recruiter', {
+        title: app_name,
+        page_title: 'Admins',
+        breadcrumbs: [
+            {
+                page_name: 'Admins',
+                page_link: '/admins'
+            },
+            {
+                page_name: 'Add Admin',
+                active: true,
+            }
+        ],
+        admins_page: true,
+        user,
+        message
+    });
+});
+
+router.post('/admins/recruiters/add', access_controll('admins', 'add'), function (req, res, next) {
+    let user = req.body
+
+    authenticate.check_user_exist(user.email).then((response) => {
+        if (user.password == user.cpassword) {
+            admin.admins.add(user).then((response) => {
+                res.redirect('/admin/admins/recruiters')
+            })
+        } else {
+            req.flash('message', `Password not match`);
+            res.redirect('/admin/admins/recruiters/add');
+        }
+    }).catch((error) => {
+        req.flash('message', `${error}`);
+        res.redirect('/admin/admins/recruiters/add');
+    })
 });
 
 router.get('/add-admin', access_controll('admins', 'add'), function (req, res, next) {
@@ -120,8 +303,9 @@ router.post('/add-admin', access_controll('admins', 'add'), function (req, res, 
 
 });
 
-router.get('/admins/:id', access_controll('admins', 'edit'), function (req, res, next) {
-    let user = req.user
+router.get('/admins/admins/edit/:id', access_controll('admins', 'edit'), function (req, res, next) {
+    let user = req.user;
+    let message = req.flash('message');
     admin.admins.get(req.params.id)
         .then((admin) => {
             // console.log(response);
@@ -140,18 +324,99 @@ router.get('/admins/:id', access_controll('admins', 'edit'), function (req, res,
                 ],
                 admins_page: true,
                 user,
-                admin
+                admin,
+                message
             });
-        })
+        });
 });
 
-router.post('/admins/update/:id', access_controll('admins', 'update'), function (req, res, next) {
+router.get('/admins/recruiters/edit/:id', access_controll('admins', 'edit'), function (req, res, next) {
+    let user = req.user;
+    let message = req.flash('message');
+    admin.admins.get(req.params.id)
+        .then((admin) => {
+            // console.log(response);
+            res.render('admin/admins/edit_admin', {
+                title: app_name,
+                page_title: 'Admins',
+                breadcrumbs: [
+                    {
+                        page_name: 'Admins',
+                        page_link: '/admins'
+                    },
+                    {
+                        page_name: 'Edit Admin',
+                        active: true,
+                    }
+                ],
+                admins_page: true,
+                user,
+                admin,
+                message
+            });
+        });
+});
+
+router.get('/admins/volunteers/edit/:id', access_controll('admins', 'edit'), function (req, res, next) {
+    let user = req.user;
+    let message = req.flash('message');
+    admin.admins.get(req.params.id)
+        .then((admin) => {
+            // console.log(response);
+            res.render('admin/admins/edit_admin', {
+                title: app_name,
+                page_title: 'Admins',
+                breadcrumbs: [
+                    {
+                        page_name: 'Admins',
+                        page_link: '/admins'
+                    },
+                    {
+                        page_name: 'Edit Admin',
+                        active: true,
+                    }
+                ],
+                admins_page: true,
+                user,
+                admin,
+                message
+            });
+        });
+});
+
+router.post('/admins/admins/update/:id', access_controll('admins', 'update'), function (req, res, next) {
     // console.log(req.params.id);
     // console.log(req.body)
     let user = req.user
     admin.admins.update(req.params.id, req.body)
         .then((response) => {
-            res.redirect('/admin/admins/')
+            res.redirect('/admin/admins/admins/')
+        }).catch((error) => {
+            res.redirect('/admin/admins/admins/' + req.params.id)
+        })
+});
+
+router.post('/admins/volunteers/update/:id', access_controll('admins', 'update'), function (req, res, next) {
+    // console.log(req.params.id);
+    // console.log(req.body)
+    let user = req.user
+    admin.admins.update(req.params.id, req.body)
+        .then((response) => {
+            res.redirect('/admin/admins/volunteers/')
+        }).catch((error) => {
+            res.redirect('/admin/admins/volunteers/' + req.params.id)
+        })
+});
+
+router.post('/admins/recruiters/update/:id', access_controll('admins', 'update'), function (req, res, next) {
+    // console.log(req.params.id);
+    // console.log(req.body)
+    let user = req.user
+    admin.admins.update(req.params.id, req.body)
+        .then((response) => {
+            res.redirect('/admin/admins/recruiters/')
+        }).catch((error) => {
+            res.redirect('/admin/admins/recruiters/' + req.params.id)
         })
 });
 
@@ -228,8 +493,10 @@ router.get('/candidates', access_controll('candidates', 'view'), function (req, 
 
 router.post('/candidates/search', access_controll('candidates', 'view'), function (req, res, next) {
     let user = req.user
+    let message = req.flash('message');
     admin.candidates.search(req.body.text)
         .then((candidates) => {
+            // console.log(candidates)
             if (candidates.length == 0) {
                 req.flash('message', 'No Candidates Found');
                 res.redirect('/admin/candidates/');
@@ -247,6 +514,7 @@ router.post('/candidates/search', access_controll('candidates', 'view'), functio
                     ],
                     candidates_page: true,
                     candidates,
+                    message,
                     user,
                 });
             }
